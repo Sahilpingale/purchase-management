@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import colors from 'colors'
 import connectDB from './config/db.js'
 import userRoutes from '../backend/routes/userRoutes.js'
+import { pageNotFound, errorHandler } from './middleware/errorMiddleware.js'
 
 // Configure Environment variables
 dotenv.config()
@@ -12,14 +13,19 @@ connectDB()
 
 const app = express()
 
-app.use('/api/users', userRoutes)
-app.get('/', (req, res) => {
-  res.send('Api is running ')
-})
+// In order to use 'req.body'
+app.use(express.json())
 
-const PORT = process.env.PORT || 5000
+// Routes
+app.use('/api/users', userRoutes)
+
+// Error Handling
+app.use(pageNotFound)
+app.use(errorHandler)
 
 // Start server
+const PORT = process.env.PORT || 5000
+
 app.listen(
   PORT,
   console.log(
