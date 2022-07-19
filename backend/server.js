@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import colors from 'colors'
 import connectDB from './config/db.js'
 import userRoutes from '../backend/routes/userRoutes.js'
+import vendorRoutes from '../backend/routes/vendorRoutes.js'
 import { pageNotFound, errorHandler } from './middleware/errorMiddleware.js'
 
 // Configure Environment variables
@@ -18,6 +19,7 @@ app.use(express.json())
 
 // Routes
 app.use('/api/users', userRoutes)
+app.use('/api/vendors', vendorRoutes)
 
 // Error Handling
 app.use(pageNotFound)

@@ -27,7 +27,7 @@ const Header = ({ history }) => {
                 <>
                   {/* Vendor Master */}
                   <NavDropdown title="Vendor Master">
-                    <LinkContainer to="/createVendor">
+                    <LinkContainer to="/vendorCreate">
                       <NavDropdown.Item>Create</NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to="/vendorMaster">
@@ -37,7 +37,7 @@ const Header = ({ history }) => {
 
                   {/* Item Master */}
                   <NavDropdown title="Item Master">
-                    <LinkContainer to="/createItem">
+                    <LinkContainer to="/itemCreate">
                       <NavDropdown.Item>Create</NavDropdown.Item>
                     </LinkContainer>
                     <LinkContainer to="/itemMaster">

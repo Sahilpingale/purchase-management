@@ -6,6 +6,10 @@ import Header from './components/Header'
 import { Container } from 'react-bootstrap'
 import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
+import vendorMasterScreen from './screens/vendorMasterScreen'
+import vendorCreateScreen from './screens/vendorCreateScreen'
+
+// import 'bootstrap/dist/css/bootstrap.min.css'
 
 function App() {
   return (
@@ -15,6 +19,8 @@ function App() {
         <Container>
           <Route path="/login" component={LoginScreen} />
           <Route path="/register" component={RegisterScreen} />
+          <Route path="/vendorMaster" component={vendorMasterScreen} />
+          <Route path="/vendorCreate" component={vendorCreateScreen} />
         </Container>
       </main>
       <Footer />
