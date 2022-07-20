@@ -33,9 +33,8 @@ const vendorSchema = mongoose.Schema(
       type: String,
     },
     category: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
-      ref: 'Category',
     },
   },
   {

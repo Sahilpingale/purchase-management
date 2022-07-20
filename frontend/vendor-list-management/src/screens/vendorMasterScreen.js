@@ -4,8 +4,21 @@ import Table from 'react-bootstrap/Table'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import { listVendors } from '../actions/vendorActions'
 
-const vendorMasterScreen = () => {
+const VendorMasterScreen = ({ history }) => {
+  const dispatch = useDispatch()
+
+  const vendorList = useSelector((state) => state.vendorList)
+  const { loading, vendors } = vendorList
+
+  // const userLogin = useSelector((state) => state.userLogin)
+  // const { userInfo } = userLogin
+
+  useEffect(() => {
+    dispatch(listVendors())
+  }, [])
+
   return (
     <>
       <Table striped bordered hover responsive className="table-sm">
@@ -23,35 +36,23 @@ const vendorMasterScreen = () => {
             <th>Mail ID</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>Gold Plus</td>
-            <td>Rakesh Jamwal</td>
-            <td>9730041833</td>
-            <td>9730041833</td>
-            <td>Regional Manager</td>
-            <td>West</td>
-            <td>Glass</td>
-            <td>Pune</td>
-            <td>Manufacturer</td>
-            <td>rakesh.jamwal@goldplusgroup.com</td>
+        {vendors.map((vendor) => (
+          <tr key={vendor._id}>
+            <td>{vendor.company}</td>
+            <td>{vendor.person_name}</td>
+            <td>{vendor.contact_number_1}</td>
+            <td>{vendor.contact_number_2}</td>
+            <td>{vendor.designation}</td>
+            <td>{vendor.area}</td>
+            <td>{vendor.category}</td>
+            <td>{vendor.plant_location}</td>
+            <td>{vendor.vendor_classification}</td>
+            <td>{vendor.email}</td>
           </tr>
-          <tr>
-            <td>Gold Plus</td>
-            <td>Rakesh Jamwal</td>
-            <td>9730041833</td>
-            <td>9730041833</td>
-            <td>Regional Manager</td>
-            <td>West</td>
-            <td>Glass</td>
-            <td>Pune</td>
-            <td>Manufacturer</td>
-            <td>rakesh.jamwal@goldplusgroup.com</td>
-          </tr>
-        </tbody>
+        ))}
       </Table>
     </>
   )
 }
 
-export default vendorMasterScreen
+export default VendorMasterScreen

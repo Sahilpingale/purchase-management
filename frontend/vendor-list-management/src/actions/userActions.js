@@ -9,6 +9,7 @@ import {
   USER_REGISTER_SUCCESS,
   USER_REGISTER_FAIL,
 } from '../constants/userConstants'
+import { VENDOR_LIST_RESET } from '../constants/vendorConstants'
 
 // 1. Login Action
 export const login = (username, password) => async (dispatch) => {
@@ -77,8 +78,12 @@ export const register = (username, password) => async (dispatch) => {
 export const logout = () => async (dispatch) => {
   try {
     localStorage.removeItem('userInfo')
+    localStorage.removeItem('vendors')
     dispatch({
       type: USER_LOGOUT,
+    })
+    dispatch({
+      type: VENDOR_LIST_RESET,
     })
     document.location.href = '/login'
   } catch (error) {

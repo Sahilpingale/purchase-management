@@ -9,24 +9,19 @@ const vendorList = [
     plant_location: 'Pune(test)',
     vendor_classification: 'Manufacturer',
     email: 'malhar@example.com',
-    category: {
-      _id: '62d6b33e0f33f14becedd2bc',
-      name: 'Glass',
-    },
+    category: 'Steel',
   },
-  //   {
-  //     company: 'Gold Plus',
-  //     person_name: 'Rakesh Jamwal',
-  //     contact_number_1: '9730041833',
-  //     designation: 'Regional Manager',
-  //     area: 'West',
-  //     plant_location: 'Pune(test)',
-  //     vendor_classification: 'Manufacturer',
-  //     email: 'rakesh.jamwal@goldplusgroup.com',
-  //     category: {
-  //       name: 'Plastic',
-  //     },
-  //   },
+  {
+    company: 'Gold Plus',
+    person_name: 'Rakesh Jamwal',
+    contact_number_1: '9730041833',
+    designation: 'Regional Manager',
+    area: 'West',
+    plant_location: 'Pune(test)',
+    vendor_classification: 'Manufacturer',
+    email: 'rakesh.jamwal@goldplusgroup.com',
+    category: 'Glass',
+  },
 ]
 
 export default vendorList
