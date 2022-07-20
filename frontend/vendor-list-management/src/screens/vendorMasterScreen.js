@@ -4,7 +4,7 @@ import { Table, DropdownButton, Dropdown } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listVendors } from '../actions/vendorActions'
+import { listVendors, getVendorByCategory } from '../actions/vendorActions'
 import { listCategories } from '../actions/categoryActions'
 
 const VendorMasterScreen = ({ history }) => {
@@ -19,9 +19,12 @@ const VendorMasterScreen = ({ history }) => {
   const [category, setCategory] = useState('All')
 
   useEffect(() => {
-    dispatch(listVendors())
     dispatch(listCategories())
-    // console.log(category)
+    if (category === 'All') {
+      dispatch(listVendors())
+    } else {
+      dispatch(getVendorByCategory({ category }))
+    }
   }, [category])
 
   const test = (e) => {
@@ -32,6 +35,7 @@ const VendorMasterScreen = ({ history }) => {
     <>
       {!category_loading && (
         <select value={category} onChange={test}>
+          <option value="All">All</option>
           {categories.map((category) => (
             <option key={category._id} value={category.name}>
               {category.name}
@@ -58,6 +62,7 @@ const VendorMasterScreen = ({ history }) => {
             </tr>
           </thead>
           <tbody>
+            {/* {category === 'All' && */}
             {vendors.map((vendor) => (
               <tr key={vendor._id}>
                 <td>{vendor.company}</td>

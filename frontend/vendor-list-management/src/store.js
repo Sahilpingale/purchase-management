@@ -26,7 +26,7 @@ const vendorListFromStorage = localStorage.getItem('vendors')
 
 const initialState = {
   userLogin: { userInfo: userInfoFromStorage },
-  vendorList: { vendors: vendorListFromStorage },
+  // vendorList: { vendors: vendorListFromStorage },
   // categoryList: { vendors: categoryListFromStorage },
 }
 
