@@ -1,0 +1,5 @@
+// 1. Get all items
+export const ITEM_LIST_REQUEST = 'ITEM_LIST_REQUEST'
+export const ITEM_LIST_SUCCESS = 'ITEM_LIST_SUCCESS'
+export const ITEM_LIST_FAIL = 'ITEM_LIST_FAIL'
+export const ITEM_LIST_RESET = 'ITEM_LIST_RESET'

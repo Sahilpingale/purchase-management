@@ -1,15 +1,32 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Form, Button, Row, Col } from 'react-bootstrap'
+import { Form, Button } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { listCategories, createCategories } from '../actions/categoryActions'
 import { createVendor } from '../actions/vendorActions'
+import Message from '../components/Message'
 
 const VendorCreateScreen = ({ history }) => {
   const dispatch = useDispatch()
 
+  // useSelectors
   const categoryList = useSelector((state) => state.categoryList)
-  const { loading: category_loading, categories } = categoryList
+  const {
+    loading: category_loading,
+    categories,
+    error: categoryListError,
+  } = categoryList
+
+  const categoryCreate = useSelector((state) => state.categoryCreate)
+  const { loading: categoryCreateLoading, error: categoryCreateError } =
+    categoryCreate
+
+  const vendorCreate = useSelector((state) => state.vendorCreate)
+  const {
+    success: vendorCreateSuccess,
+    loading: vendorCreateLoading,
+    error: vendorCreateError,
+  } = vendorCreate
 
   // useState for form
   const [company, setCompany] = useState('')
@@ -30,12 +47,6 @@ const VendorCreateScreen = ({ history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault()
-
-    // history.push('/vendorMaster')
-
-    // console.log(category)
-    // console.log(categoryDD)
-
     if (category !== '') {
       dispatch(
         createVendor({
@@ -68,6 +79,15 @@ const VendorCreateScreen = ({ history }) => {
         })
       )
     }
+    if (
+      // !vendorCreateLoading &&
+      // !categoryCreateLoading &&
+      !categoryCreateError &&
+      !vendorCreateError
+    ) {
+      // history.push('/vendorMaster')
+      console.log('no error')
+    }
   }
 
   const ddClickHandler = () => {
@@ -80,6 +100,18 @@ const VendorCreateScreen = ({ history }) => {
 
   return (
     <>
+      {vendorCreateSuccess && (
+        <Message variant="success">Vendor created</Message>
+      )}
+      {categoryListError && (
+        <Message variant="danger">{categoryListError}</Message>
+      )}
+      {categoryCreateError && (
+        <Message variant="danger">{categoryCreateError}</Message>
+      )}
+      {vendorCreateError && (
+        <Message variant="danger">{vendorCreateError}</Message>
+      )}
       <FormContainer>
         <h2 className="mb-4">Add Vendor Details</h2>
         <Form onSubmit={submitHandler}>

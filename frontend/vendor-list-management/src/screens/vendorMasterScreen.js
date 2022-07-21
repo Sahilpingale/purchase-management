@@ -11,10 +11,14 @@ const VendorMasterScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const vendorList = useSelector((state) => state.vendorList)
-  const { loading, vendors } = vendorList
+  const { loading, vendors, error } = vendorList
 
   const categoryList = useSelector((state) => state.categoryList)
-  const { loading: category_loading, categories } = categoryList
+  const {
+    loading: category_loading,
+    categories,
+    error: category_error,
+  } = categoryList
 
   const [category, setCategory] = useState('All')
 
@@ -33,6 +37,8 @@ const VendorMasterScreen = ({ history }) => {
 
   return (
     <>
+      {error && <Message variant="danger">{error}</Message>}
+      {category_error && <Message variant="danger">{category_error}</Message>}
       {!category_loading && (
         <select value={category} onChange={test}>
           <option value="All">All</option>

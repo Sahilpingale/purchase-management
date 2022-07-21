@@ -1,7 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { listItems } from '../actions/itemActions'
 
-const itemViewScreen = () => {
+const ItemViewScreen = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(listItems())
+  }, [dispatch])
+
   return <div>itemViewScreen</div>
 }
-
-export default itemViewScreen
+export default ItemViewScreen
