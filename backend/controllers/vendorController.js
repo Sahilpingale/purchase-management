@@ -21,4 +21,60 @@ const getVendorByCategory = asyncHandler(async (req, res) => {
   res.json(vendors)
 })
 
-export { getAllVendors, getVendorByCategory }
+// @desc    Create Vendor
+// @route   Post /api/vendors
+// @access  Private
+
+const createVendor = asyncHandler(async (req, res) => {
+  const {
+    company,
+    person_name,
+    contact_number_1,
+    contact_number_2,
+    designation,
+    area,
+    plant_location,
+    vendor_classification,
+    email,
+    category,
+  } = req.body
+
+  const vendorExists = await Vendor.findOne({ person_name })
+  if (vendorExists) {
+    res.status(400)
+    throw new Error('Vendor already exists')
+  }
+
+  const vendor = await Vendor.create({
+    company,
+    person_name,
+    contact_number_1,
+    contact_number_2,
+    designation,
+    area,
+    plant_location,
+    vendor_classification,
+    email,
+    category,
+  })
+
+  if (vendor) {
+    res.status(201).json({
+      _id: vendor._id,
+      person_name: vendor.person_name,
+      contact_number_1: vendor.contact_number_1,
+      contact_number_2: vendor.contact_number_2,
+      designation: vendor.designation,
+      area: vendor.area,
+      plant_location: vendor.plant_location,
+      vendor_classification: vendor.vendor_classification,
+      email: vendor.email,
+      category: vendor.category,
+    })
+  } else {
+    res.status(400)
+    throw new Error('Invalid Vendor Data')
+  }
+})
+
+export { getAllVendors, getVendorByCategory, createVendor }
