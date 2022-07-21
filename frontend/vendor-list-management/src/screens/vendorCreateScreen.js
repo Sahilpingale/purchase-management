@@ -1,11 +1,28 @@
-import React from 'react'
-import { Form, Button } from 'react-bootstrap'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Form, Button, Row, Col } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
+import { listCategories } from '../actions/categoryActions'
 
-const vendorCreateScreen = () => {
+const VendorCreateScreen = () => {
+  const dispatch = useDispatch()
+
+  const categoryList = useSelector((state) => state.categoryList)
+  const { loading: category_loading, categories } = categoryList
+
+  const [category, setCategory] = useState('All')
+
+  useEffect(() => {
+    dispatch(listCategories())
+  }, [])
+
   const submitHandler = (e) => {
     e.preventDefault()
     console.log('submit')
+  }
+
+  const test = (e) => {
+    setCategory(e.target.value)
   }
 
   return (
@@ -59,6 +76,21 @@ const vendorCreateScreen = () => {
             <Form.Control required type="text" placeholder="Enter Material" />
           </Form.Group>
 
+          <Form.Text className="text-muted mb-3">OR</Form.Text>
+
+          <div className="mb-5 mt-3">
+            {!category_loading && (
+              <select value={category} onChange={test}>
+                <option value="All">All</option>
+                {categories.map((category) => (
+                  <option key={category._id} value={category.name}>
+                    {category.name}
+                  </option>
+                ))}
+              </select>
+            )}
+          </div>
+
           <Form.Group className="mb-3">
             <Form.Label>Plant Location</Form.Label>
             <Form.Control type="text" placeholder="Enter Plant Location" />
@@ -86,4 +118,4 @@ const vendorCreateScreen = () => {
   )
 }
 
-export default vendorCreateScreen
+export default VendorCreateScreen
