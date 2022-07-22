@@ -16,10 +16,8 @@ const ItemViewScreen = () => {
     dispatch(listCategories())
     if (category === 'All') {
       dispatch(listItems())
-      console.log('All')
     } else {
       dispatch(getItemByCategory({ category }))
-      console.log(category)
     }
   }, [category])
 

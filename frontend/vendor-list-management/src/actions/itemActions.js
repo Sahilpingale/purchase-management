@@ -44,6 +44,7 @@ export const listItems = () => async (dispatch, getState) => {
 
 // 2. Create Item
 export const createItem = (details) => async (dispatch, getState) => {
+  console.log('test')
   try {
     dispatch({
       type: ITEM_CREATE_REQUEST,
@@ -58,9 +59,9 @@ export const createItem = (details) => async (dispatch, getState) => {
         'Content-Type': 'application/json',
       },
     }
-
-    const res = await axios.post('api/items', config)
-
+    console.log('test1')
+    const res = await axios.post('api/items', details, config)
+    console.log('test2')
     dispatch({
       type: ITEM_CREATE_SUCCESS,
       payload: res.data,

@@ -23,15 +23,12 @@ const itemSchema = mongoose.Schema({
   },
   taxAmount: {
     type: Number,
-    required: true,
   },
   additionalCost: {
     type: Number,
-    required: true,
   },
   dateOfPurchase: {
     type: String,
-    required: true,
   },
 })
 
