@@ -45,4 +45,14 @@ const createItems = asyncHandler(async (req, res) => {
   }
 })
 
-export { getAllItems, createItems }
+// @desc    Get Items by category
+// @route   GET /api/items/category
+// @access  Private
+
+const getItemByCategory = asyncHandler(async (req, res) => {
+  const { category } = req.body
+  const item = await Item.find({ name: category })
+  res.json(item)
+})
+
+export { getAllItems, createItems, getItemByCategory }

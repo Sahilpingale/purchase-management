@@ -11,11 +11,8 @@ const vendorSchema = mongoose.Schema(
       required: true,
     },
     contact_number_1: {
-      type: Number,
+      type: [String],
       required: true,
-    },
-    contact_number_2: {
-      type: Number,
     },
     designation: {
       type: String,

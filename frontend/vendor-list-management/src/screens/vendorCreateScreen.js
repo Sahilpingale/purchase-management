@@ -32,7 +32,6 @@ const VendorCreateScreen = ({ history }) => {
   const [company, setCompany] = useState('')
   const [person_name, setPerson_name] = useState('')
   const [contact_number_1, setContact_number_1] = useState('')
-  const [contact_number_2, setContact_number_2] = useState('')
   const [designation, setDesignation] = useState('')
   const [area, setArea] = useState('')
   const [plant_location, setPlant_location] = useState('')
@@ -53,7 +52,6 @@ const VendorCreateScreen = ({ history }) => {
           company,
           person_name,
           contact_number_1,
-          contact_number_2,
           designation,
           area,
           category,
@@ -69,7 +67,6 @@ const VendorCreateScreen = ({ history }) => {
           company,
           person_name,
           contact_number_1,
-          contact_number_2,
           designation,
           area,
           category: categoryDD,
@@ -120,7 +117,7 @@ const VendorCreateScreen = ({ history }) => {
           </Form.Text>
 
           {/* Company */}
-          <Form.Group className="mt-2 mb-3">
+          <Form.Group className="mt-2 mb-3 " d-print-none>
             <Form.Label>Company *</Form.Label>
             <Form.Control
               type="text"
@@ -141,21 +138,11 @@ const VendorCreateScreen = ({ history }) => {
 
           {/* Number 1 */}
           <Form.Group className="mb-3">
-            <Form.Label>Contact Number 1</Form.Label>
+            <Form.Label>Contact Number</Form.Label>
             <Form.Control
-              type="number"
+              type="text"
               placeholder="Enter Contact Number"
               onChange={(e) => setContact_number_1(e.target.value)}
-            />
-          </Form.Group>
-
-          {/* Number 2 */}
-          <Form.Group className="mb-3">
-            <Form.Label>Contact Number 2</Form.Label>
-            <Form.Control
-              type="number"
-              placeholder="Enter Contact Number"
-              onChange={(e) => setContact_number_2(e.target.value)}
             />
           </Form.Group>
 

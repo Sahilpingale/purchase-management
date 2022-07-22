@@ -75,3 +75,41 @@ export const createItem = (details) => async (dispatch, getState) => {
     })
   }
 }
+
+// 2. Get Item by category
+export const getItemByCategory = (category) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ITEM_LIST_RESET,
+    })
+    dispatch({
+      type: ITEM_LIST_REQUEST,
+    })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        'Content-Type': 'application/json',
+      },
+    }
+    console.log('test')
+    const res = await axios.post('/api/items/category', category, config)
+    dispatch({
+      type: ITEM_LIST_SUCCESS,
+      payload: res.data,
+    })
+
+    // localStorage.setItem('vendors', JSON.stringify(res.data))
+  } catch (error) {
+    dispatch({
+      type: ITEM_LIST_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}

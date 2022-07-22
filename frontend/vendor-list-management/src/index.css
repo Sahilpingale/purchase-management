@@ -1,8 +1,9 @@
-table,
-th,
-td {
-  border: 1px solid black;
+.hide {
+  color: red;
 }
-tr {
-  border: 1px solid black;
+.links:link,
+.links:visited {
+  text-decoration: none;
+  color: black;
+  cursor: pointer;
 }

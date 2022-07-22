@@ -57,10 +57,9 @@ const VendorMasterScreen = ({ history }) => {
             <tr>
               <th>Company</th>
               <th>Person Name</th>
-              <th>Contact Number 1</th>
-              <th>Contact number 2</th>
+              <th>Contact Number</th>
               <th>Designation</th>
-              <th>Area</th>
+              <th>&nbsp;Area&nbsp;</th>
               <th>Material</th>
               <th>Plant Location</th>
               <th>Vendor Classification</th>
@@ -73,14 +72,25 @@ const VendorMasterScreen = ({ history }) => {
               <tr key={vendor._id}>
                 <td>{vendor.company}</td>
                 <td>{vendor.person_name}</td>
-                <td>{vendor.contact_number_1}</td>
-                <td>{vendor.contact_number_2}</td>
+                <td>
+                  {vendor.contact_number_1.map((no, index) => (
+                    <a className="links" href={`tel:${no}`}>
+                      {no}{' '}
+                      {vendor.contact_number_1.length > 1 &&
+                        index !== vendor.contact_number_1.length - 1 && <>,</>}
+                    </a>
+                  ))}{' '}
+                </td>
                 <td>{vendor.designation}</td>
                 <td>{vendor.area}</td>
                 <td>{vendor.category}</td>
                 <td>{vendor.plant_location}</td>
                 <td>{vendor.vendor_classification}</td>
-                <td>{vendor.email}</td>
+                <td>
+                  <a className="links" href={`mailto:${vendor.email}`}>
+                    {vendor.email}
+                  </a>
+                </td>
               </tr>
             ))}
           </tbody>

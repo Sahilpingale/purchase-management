@@ -30,7 +30,6 @@ const createVendor = asyncHandler(async (req, res) => {
     company,
     person_name,
     contact_number_1,
-    contact_number_2,
     designation,
     area,
     plant_location,
@@ -45,11 +44,15 @@ const createVendor = asyncHandler(async (req, res) => {
     throw new Error('Vendor already exists')
   }
 
+  const contactNumber = contact_number_1
+    .toString()
+    .split(',')
+    .map((number) => number.trim())
+
   const vendor = await Vendor.create({
     company,
     person_name,
-    contact_number_1,
-    contact_number_2,
+    contact_number_1: contactNumber,
     designation,
     area,
     plant_location,
@@ -63,7 +66,6 @@ const createVendor = asyncHandler(async (req, res) => {
       _id: vendor._id,
       person_name: vendor.person_name,
       contact_number_1: vendor.contact_number_1,
-      contact_number_2: vendor.contact_number_2,
       designation: vendor.designation,
       area: vendor.area,
       plant_location: vendor.plant_location,
