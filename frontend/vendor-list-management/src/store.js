@@ -5,6 +5,8 @@ import { userLoginReducer, userRegisterReducer } from './reducers/userReducers'
 import {
   vendorListReducer,
   vendorCreateReducer,
+  vendorDetailsReducer,
+  vendorUpdateReducer,
 } from './reducers/vendorReducers'
 import {
   categoryCreateReducer,
@@ -15,10 +17,15 @@ import { itemListReducer, itemCreateReducer } from './reducers/itemReducers'
 const reducer = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
+
   vendorList: vendorListReducer,
   vendorCreate: vendorCreateReducer,
+  vendorDetails: vendorDetailsReducer,
+  vendorUpdate: vendorUpdateReducer,
+
   categoryList: categoryListReducer,
   categoryCreate: categoryCreateReducer,
+
   itemList: itemListReducer,
   itemCreate: itemCreateReducer,
 })

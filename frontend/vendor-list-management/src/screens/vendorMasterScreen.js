@@ -1,14 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { LinkContainer } from 'react-router-bootstrap'
-import { Table, DropdownButton, Dropdown } from 'react-bootstrap'
+import { Table, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
-import { listVendors, getVendorByCategory } from '../actions/vendorActions'
+import {
+  listVendors,
+  getVendorByCategory,
+  vendorDetailsReset,
+  vendorUpdateReset,
+} from '../actions/vendorActions'
 import { listCategories } from '../actions/categoryActions'
 
 const VendorMasterScreen = ({ history }) => {
   const dispatch = useDispatch()
+
+  // --- useSelectors --- //
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   const vendorList = useSelector((state) => state.vendorList)
   const { loading, vendors, error } = vendorList
@@ -20,17 +29,24 @@ const VendorMasterScreen = ({ history }) => {
     error: category_error,
   } = categoryList
 
+  // --- useState --- //
   const [category, setCategory] = useState('All')
 
+  // --- useEffect --- //
   useEffect(() => {
-    dispatch(listCategories())
-    if (category === 'All') {
-      dispatch(listVendors())
+    if (!userInfo) {
+      history.push('/login')
     } else {
-      dispatch(getVendorByCategory({ category }))
+      dispatch(listCategories())
+      if (category === 'All') {
+        dispatch(listVendors())
+      } else {
+        dispatch(getVendorByCategory({ category }))
+      }
     }
   }, [category])
 
+  // --- Handlers --- //
   const test = (e) => {
     setCategory(e.target.value)
   }
@@ -74,7 +90,7 @@ const VendorMasterScreen = ({ history }) => {
                 <td>{vendor.person_name}</td>
                 <td>
                   {vendor.contact_number_1.map((no, index) => (
-                    <a className="links" href={`tel:${no}`}>
+                    <a key={no.index} className="links" href={`tel:${no}`}>
                       {no}{' '}
                       {vendor.contact_number_1.length > 1 &&
                         index !== vendor.contact_number_1.length - 1 && <>,</>}
@@ -90,6 +106,18 @@ const VendorMasterScreen = ({ history }) => {
                   <a className="links" href={`mailto:${vendor.email}`}>
                     {vendor.email}
                   </a>
+                </td>
+                <td>
+                  <LinkContainer to={`/vendors/${vendor._id}`}>
+                    <Button variant="light" className="btn-sm">
+                      <i className="fas fa-edit"></i>
+                    </Button>
+                  </LinkContainer>
+                </td>
+                <td>
+                  <Button variant="light" className="btn-sm">
+                    <i className="fas fa-trash" style={{ color: 'red' }}></i>
+                  </Button>
                 </td>
               </tr>
             ))}

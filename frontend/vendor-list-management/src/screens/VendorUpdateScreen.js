@@ -3,16 +3,24 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { listCategories, createCategories } from '../actions/categoryActions'
-import { createVendor } from '../actions/vendorActions'
+import {
+  getVendorDetailsById,
+  vendorDetailsReset,
+  vendorUpdateReset,
+  updateVendor,
+} from '../actions/vendorActions'
 import Message from '../components/Message'
 
-const VendorCreateScreen = ({ history }) => {
+const VendorUpdateScreen = ({ history, match }) => {
+  const userId = match.params.id
   const dispatch = useDispatch()
 
-  // useSelectors
+  //--- useSelectors ---//
+  // 1.UserLogin
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  // 2.CategoryList
   const categoryList = useSelector((state) => state.categoryList)
   const {
     loading: category_loading,
@@ -20,21 +28,31 @@ const VendorCreateScreen = ({ history }) => {
     error: categoryListError,
   } = categoryList
 
+  // 3.CatergoryCreate
   const categoryCreate = useSelector((state) => state.categoryCreate)
   const { loading: categoryCreateLoading, error: categoryCreateError } =
     categoryCreate
 
-  const vendorCreate = useSelector((state) => state.vendorCreate)
+  // 4.VendorUpdate
+  const vendorUpdate = useSelector((state) => state.vendorUpdate)
   const {
-    success: vendorCreateSuccess,
-    loading: vendorCreateLoading,
-    error: vendorCreateError,
-  } = vendorCreate
+    success: vendorUpdateSuccess,
+    loading: vendorUpdateLoading,
+    error: vendorUpdateError,
+  } = vendorUpdate
 
-  // useState for form
-  const [company, setCompany] = useState('')
+  // 5.Vendor Details
+  const vendorDetails = useSelector((state) => state.vendorDetails)
+  const {
+    loading: vendorDetailsLoading,
+    error: vendorDetailsError,
+    vendor,
+  } = vendorDetails
+
+  //--- useState for form ---//
+  const [company, setCompany] = useState(vendor.company)
   const [person_name, setPerson_name] = useState('')
-  const [contact_number_1, setContact_number_1] = useState('')
+  const [contact_number_1, setContact_number_1] = useState([])
   const [designation, setDesignation] = useState('')
   const [area, setArea] = useState('')
   const [plant_location, setPlant_location] = useState('')
@@ -43,20 +61,39 @@ const VendorCreateScreen = ({ history }) => {
   const [category, setCategory] = useState('')
   const [categoryDD, setCategoryDD] = useState('')
 
+  // ---UseEffect ---//
   useEffect(() => {
     if (!userInfo) {
-      console.log('t1')
       history.push('/login')
     } else {
+      if (vendorUpdateSuccess) {
+        history.push('/vendorMaster')
+        dispatch(vendorDetailsReset())
+        dispatch(vendorUpdateReset())
+      }
       dispatch(listCategories())
+      if (!vendor || !vendor.company) {
+        dispatch(getVendorDetailsById(userId))
+      } else {
+        setCompany(vendor.company)
+        setPerson_name(vendor.person_name)
+        setContact_number_1(vendor.contact_number_1)
+        setDesignation(vendor.designation)
+        setArea(vendor.area)
+        setPlant_location(vendor.plant_location)
+        setVendor_classification(vendor.vendor_classification)
+        setEmail(vendor.email)
+        setCategoryDD(vendor.category)
+      }
     }
-  }, [])
+  }, [userId, vendor, vendorUpdateSuccess])
 
+  // ---Handlers ---//
   const submitHandler = (e) => {
     e.preventDefault()
     if (category !== '') {
       dispatch(
-        createVendor({
+        updateVendor(userId, {
           company,
           person_name,
           contact_number_1,
@@ -71,7 +108,7 @@ const VendorCreateScreen = ({ history }) => {
       dispatch(createCategories(category))
     } else {
       dispatch(
-        createVendor({
+        updateVendor(userId, {
           company,
           person_name,
           contact_number_1,
@@ -83,15 +120,6 @@ const VendorCreateScreen = ({ history }) => {
           email,
         })
       )
-    }
-    if (
-      // !vendorCreateLoading &&
-      // !categoryCreateLoading &&
-      !categoryCreateError &&
-      !vendorCreateError
-    ) {
-      // history.push('/vendorMaster')
-      console.log('no error')
     }
   }
 
@@ -105,8 +133,8 @@ const VendorCreateScreen = ({ history }) => {
 
   return (
     <>
-      {vendorCreateSuccess && (
-        <Message variant="success">Vendor created</Message>
+      {vendorUpdateSuccess && (
+        <Message variant="success">Vendor Updated</Message>
       )}
       {categoryListError && (
         <Message variant="danger">{categoryListError}</Message>
@@ -114,20 +142,21 @@ const VendorCreateScreen = ({ history }) => {
       {categoryCreateError && (
         <Message variant="danger">{categoryCreateError}</Message>
       )}
-      {vendorCreateError && (
-        <Message variant="danger">{vendorCreateError}</Message>
+      {vendorUpdateError && (
+        <Message variant="danger">{vendorUpdateError}</Message>
       )}
       <FormContainer>
-        <h2 className="mb-4">Add Vendor Details</h2>
+        <h2 className="mb-4">Update Vendor Details</h2>
         <Form onSubmit={submitHandler}>
           <Form.Text className="text-muted mb-3">
             Fields marked with * are mandatory
           </Form.Text>
 
           {/* Company */}
-          <Form.Group className="mt-2 mb-3 " d-print-none>
+          <Form.Group className="mt-2 mb-3 ">
             <Form.Label>Company *</Form.Label>
             <Form.Control
+              value={company}
               type="text"
               placeholder="Enter Company"
               onChange={(e) => setCompany(e.target.value)}
@@ -138,6 +167,7 @@ const VendorCreateScreen = ({ history }) => {
           <Form.Group className="mb-3">
             <Form.Label>Person Name *</Form.Label>
             <Form.Control
+              value={person_name}
               type="text"
               placeholder="Enter Person Name"
               onChange={(e) => setPerson_name(e.target.value)}
@@ -148,6 +178,7 @@ const VendorCreateScreen = ({ history }) => {
           <Form.Group className="mb-3">
             <Form.Label>Contact Number</Form.Label>
             <Form.Control
+              value={contact_number_1}
               type="text"
               placeholder="Enter Contact Number"
               onChange={(e) => setContact_number_1(e.target.value)}
@@ -158,6 +189,7 @@ const VendorCreateScreen = ({ history }) => {
           <Form.Group className="mb-3">
             <Form.Label>Designation</Form.Label>
             <Form.Control
+              value={designation}
               type="text"
               placeholder="Enter Designation"
               onChange={(e) => setDesignation(e.target.value)}
@@ -168,6 +200,7 @@ const VendorCreateScreen = ({ history }) => {
           <Form.Group className="mb-3">
             <Form.Label>Area</Form.Label>
             <Form.Control
+              value={area}
               type="text"
               placeholder="Enter Area"
               onChange={(e) => setArea(e.target.value)}
@@ -211,6 +244,7 @@ const VendorCreateScreen = ({ history }) => {
           <Form.Group className="mb-3">
             <Form.Label>Plant Location</Form.Label>
             <Form.Control
+              value={plant_location}
               type="text"
               placeholder="Enter Plant Location"
               onChange={(e) => setPlant_location(e.target.value)}
@@ -221,6 +255,7 @@ const VendorCreateScreen = ({ history }) => {
           <Form.Group className="mb-3">
             <Form.Label>Vendor Classification</Form.Label>
             <Form.Control
+              value={vendor_classification}
               type="text"
               placeholder="Enter Vendor Classification"
               onChange={(e) => setVendor_classification(e.target.value)}
@@ -231,6 +266,7 @@ const VendorCreateScreen = ({ history }) => {
           <Form.Group className="mb-3">
             <Form.Label>Mail ID</Form.Label>
             <Form.Control
+              value={email}
               type="text"
               placeholder="Enter Mail ID"
               onChange={(e) => setEmail(e.target.value)}
@@ -246,4 +282,4 @@ const VendorCreateScreen = ({ history }) => {
   )
 }
 
-export default VendorCreateScreen
+export default VendorUpdateScreen

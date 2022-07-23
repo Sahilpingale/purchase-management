@@ -7,21 +7,15 @@ import Loader from '../components/Loader'
 import { listCategories } from '../actions/categoryActions'
 import { getItemByCategory } from '../actions/itemActions'
 
-const ItemViewScreen = () => {
+const ItemViewScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   const [category, setCategory] = useState('All')
 
-  useEffect(() => {
-    dispatch(listCategories())
-    if (category === 'All') {
-      dispatch(listItems())
-    } else {
-      dispatch(getItemByCategory({ category }))
-    }
-  }, [category])
-
   // useSelectors
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
+
   const itemList = useSelector((state) => state.itemList)
   const { items, loading: itemListLoading, error: itemListError } = itemList
 
@@ -35,6 +29,19 @@ const ItemViewScreen = () => {
   const test = (e) => {
     setCategory(e.target.value)
   }
+
+  useEffect(() => {
+    if (!userInfo) {
+      history.push('/')
+    } else {
+      dispatch(listCategories())
+      if (category === 'All') {
+        dispatch(listItems())
+      } else {
+        dispatch(getItemByCategory({ category }))
+      }
+    }
+  }, [category, history, userInfo])
 
   return (
     <>

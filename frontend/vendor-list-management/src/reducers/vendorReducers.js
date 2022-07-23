@@ -6,6 +6,14 @@ import {
   VENDOR_CREATE_REQUEST,
   VENDOR_CREATE_SUCCESS,
   VENDOR_CREATE_FAIL,
+  VENDOR_DETAILS_REQUEST,
+  VENDOR_DETAILS_SUCCESS,
+  VENDOR_DETAILS_FAIL,
+  VENDOR_DETAILS_RESET,
+  VENDOR_UPDATE_REQUEST,
+  VENDOR_UPDATE_SUCCESS,
+  VENDOR_UPDATE_FAIL,
+  VENDOR_UPDATE_RESET,
 } from '../constants/vendorConstants'
 
 // 1. Get Vendor List
@@ -51,6 +59,63 @@ export const vendorCreateReducer = (state = {}, action) => {
       return {
         loading: false,
         error: payload,
+      }
+    default:
+      return state
+  }
+}
+
+// 3. Get Vendor by Id
+export const vendorDetailsReducer = (state = { vendor: {} }, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case VENDOR_DETAILS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case VENDOR_DETAILS_SUCCESS:
+      return {
+        loading: false,
+        vendor: payload,
+      }
+    case VENDOR_DETAILS_FAIL:
+      return {
+        loading: false,
+        error: payload,
+      }
+    case VENDOR_DETAILS_RESET:
+      return {
+        loading: false,
+        vendor: {},
+      }
+    default:
+      return state
+  }
+}
+
+// 4. Update Vendor
+export const vendorUpdateReducer = (state = { vendor: {} }, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case VENDOR_UPDATE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      }
+    case VENDOR_UPDATE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      }
+    case VENDOR_UPDATE_FAIL:
+      return {
+        loading: false,
+        error: payload,
+      }
+    case VENDOR_UPDATE_RESET:
+      return {
+        vendor: {},
       }
     default:
       return state

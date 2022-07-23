@@ -79,4 +79,56 @@ const createVendor = asyncHandler(async (req, res) => {
   }
 })
 
-export { getAllVendors, getVendorByCategory, createVendor }
+// @desc    Get Vendor by ID
+// @route   GET /api/vendors/:id
+// @access  Private
+
+const getVendorById = asyncHandler(async (req, res) => {
+  const vendor = await Vendor.findById(req.params.id)
+
+  if (vendor) {
+    res.json(vendor)
+  } else {
+    res.status(404)
+    throw new Error('Vendor not found')
+  }
+})
+
+// @desc    Update Vendor
+// @route   PUT /api/vendors/:id
+// @access  Private
+
+const updateVendor = asyncHandler(async (req, res) => {
+  const vendor = await Vendor.findById(req.params.id)
+
+  if (vendor) {
+    vendor.company = req.body.company || vendor.company
+    vendor.person_name = req.body.person_name || vendor.person_name
+    vendor.contact_number_1 =
+      req.body.contact_number_1 || vendor.contact_number_1
+    vendor.designation = req.body.designation || vendor.designation
+    vendor.area = req.body.area || vendor.area
+    vendor.email = req.body.email || vendor.email
+    vendor.plant_location = req.body.plant_location || vendor.plant_location
+    vendor.category = req.body.category || vendor.category
+    vendor.vendor_classification =
+      req.body.vendor_classification || vendor.vendor_classification
+
+    const updatedVendor = await vendor.save()
+
+    res.json({
+      message: 'Vendor Updates Successfully!',
+    })
+  } else {
+    res.status(404)
+    throw new Error('Vendor not found')
+  }
+})
+
+export {
+  getAllVendors,
+  getVendorByCategory,
+  createVendor,
+  getVendorById,
+  updateVendor,
+}

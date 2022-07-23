@@ -6,7 +6,7 @@ import { listCategories, createCategories } from '../actions/categoryActions'
 import { createItem } from '../actions/itemActions'
 import Message from '../components/Message'
 
-const ItemCreateScreen = () => {
+const ItemCreateScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   //--- useSelectors --- //
@@ -21,16 +21,15 @@ const ItemCreateScreen = () => {
 
   // 2.Create Category
   const categoryCreate = useSelector((state) => state.categoryCreate)
-  const { loading: categoryCreateLoading, error: categoryCreateError } =
-    categoryCreate
+  const { error: categoryCreateError } = categoryCreate
 
   // 3. Item Create
   const itemCreate = useSelector((state) => state.itemCreate)
-  const {
-    success: itemCreateSuccess,
-    loading: itemCreateLoading,
-    error: itemCreateError,
-  } = itemCreate
+  const { success: itemCreateSuccess, error: itemCreateError } = itemCreate
+
+  // 4. User Login Info
+  const userLogin = useSelector((state) => state.userLogin)
+  const { userInfo } = userLogin
 
   //--- useState for form ---//
   const [name, setName] = useState('')
@@ -45,8 +44,12 @@ const ItemCreateScreen = () => {
 
   //--- useEffect ---//
   useEffect(() => {
-    dispatch(listCategories())
-  }, [])
+    if (!userInfo) {
+      history.push('/login')
+    } else {
+      dispatch(listCategories())
+    }
+  }, [history, dispatch, userInfo])
 
   //--- Handlers ---//
   const submitHandler = (e) => {

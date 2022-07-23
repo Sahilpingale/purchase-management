@@ -8,8 +8,10 @@ import LoginScreen from './screens/LoginScreen'
 import RegisterScreen from './screens/RegisterScreen'
 import VendorMasterScreen from './screens/VendorMasterScreen'
 import VendorCreateScreen from './screens/VendorCreateScreen'
+import VendorUpdateScreen from './screens/VendorUpdateScreen'
 import ItemCreateScreen from './screens/ItemCreateScreen'
 import ItemViewScreen from './screens/ItemViewScreen'
+import HomePage from './screens/HomePage'
 
 // import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -23,8 +25,10 @@ function App() {
           <Route path="/register" component={RegisterScreen} />
           <Route path="/vendorMaster" component={VendorMasterScreen} />
           <Route path="/vendorCreate" component={VendorCreateScreen} />
+          <Route path="/vendors/:id" component={VendorUpdateScreen} />
           <Route path="/itemMaster" component={ItemViewScreen} />
           <Route path="/itemCreate" component={ItemCreateScreen} />
+          <Route path="/" component={HomePage} exact />
         </Container>
       </main>
       <Footer />
