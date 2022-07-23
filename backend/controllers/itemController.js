@@ -55,4 +55,15 @@ const getItemByCategory = asyncHandler(async (req, res) => {
   res.json(item)
 })
 
-export { getAllItems, createItems, getItemByCategory }
+const deleteItem = asyncHandler(async (req, res) => {
+  const item = await Item.findById(req.params.id)
+  if (item) {
+    await item.remove()
+    res.json({ message: 'Item removed' })
+  } else {
+    res.status(404)
+    throw new Error('Item not found')
+  }
+})
+
+export { getAllItems, createItems, getItemByCategory, deleteItem }

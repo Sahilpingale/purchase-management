@@ -14,6 +14,9 @@ import {
   VENDOR_UPDATE_SUCCESS,
   VENDOR_UPDATE_FAIL,
   VENDOR_UPDATE_RESET,
+  VENDOR_DELETE_REQUEST,
+  VENDOR_DELETE_SUCCESS,
+  VENDOR_DELETE_FAIL,
 } from '../constants/vendorConstants'
 
 // 1. Get Vendor List
@@ -116,6 +119,29 @@ export const vendorUpdateReducer = (state = { vendor: {} }, action) => {
     case VENDOR_UPDATE_RESET:
       return {
         vendor: {},
+      }
+    default:
+      return state
+  }
+}
+
+// 5. Delete Vendor
+export const vendorDeleteReducer = (state = {}, action) => {
+  const { type, payload } = action
+  switch (type) {
+    case VENDOR_DELETE_REQUEST:
+      return {
+        loading: true,
+      }
+    case VENDOR_DELETE_SUCCESS:
+      return {
+        loading: false,
+        success: true,
+      }
+    case VENDOR_DELETE_FAIL:
+      return {
+        loading: false,
+        error: payload,
       }
     default:
       return state

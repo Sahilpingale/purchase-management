@@ -10,6 +10,7 @@ import {
   updateVendor,
 } from '../actions/vendorActions'
 import Message from '../components/Message'
+import Loader from '../components/Loader'
 
 const VendorUpdateScreen = ({ history, match }) => {
   const userId = match.params.id
@@ -30,14 +31,13 @@ const VendorUpdateScreen = ({ history, match }) => {
 
   // 3.CatergoryCreate
   const categoryCreate = useSelector((state) => state.categoryCreate)
-  const { loading: categoryCreateLoading, error: categoryCreateError } =
-    categoryCreate
+  const { error: categoryCreateError } = categoryCreate
 
   // 4.VendorUpdate
   const vendorUpdate = useSelector((state) => state.vendorUpdate)
   const {
     success: vendorUpdateSuccess,
-    loading: vendorUpdateLoading,
+
     error: vendorUpdateError,
   } = vendorUpdate
 
@@ -68,8 +68,6 @@ const VendorUpdateScreen = ({ history, match }) => {
     } else {
       if (vendorUpdateSuccess) {
         history.push('/vendorMaster')
-        dispatch(vendorDetailsReset())
-        dispatch(vendorUpdateReset())
       }
       dispatch(listCategories())
       if (!vendor || !vendor.company) {
@@ -145,139 +143,143 @@ const VendorUpdateScreen = ({ history, match }) => {
       {vendorUpdateError && (
         <Message variant="danger">{vendorUpdateError}</Message>
       )}
-      <FormContainer>
-        <h2 className="mb-4">Update Vendor Details</h2>
-        <Form onSubmit={submitHandler}>
-          <Form.Text className="text-muted mb-3">
-            Fields marked with * are mandatory
-          </Form.Text>
+      {vendorDetailsLoading ? (
+        <Loader />
+      ) : (
+        <FormContainer>
+          <h2 className="mb-4">Update Vendor Details</h2>
+          <Form onSubmit={submitHandler}>
+            <Form.Text className="text-muted mb-3">
+              Fields marked with * are mandatory
+            </Form.Text>
 
-          {/* Company */}
-          <Form.Group className="mt-2 mb-3 ">
-            <Form.Label>Company *</Form.Label>
-            <Form.Control
-              value={company}
-              type="text"
-              placeholder="Enter Company"
-              onChange={(e) => setCompany(e.target.value)}
-            />
-          </Form.Group>
+            {/* Company */}
+            <Form.Group className="mt-2 mb-3 ">
+              <Form.Label>Company *</Form.Label>
+              <Form.Control
+                value={company}
+                type="text"
+                placeholder="Enter Company"
+                onChange={(e) => setCompany(e.target.value)}
+              />
+            </Form.Group>
 
-          {/* Person Name */}
-          <Form.Group className="mb-3">
-            <Form.Label>Person Name *</Form.Label>
-            <Form.Control
-              value={person_name}
-              type="text"
-              placeholder="Enter Person Name"
-              onChange={(e) => setPerson_name(e.target.value)}
-            />
-          </Form.Group>
+            {/* Person Name */}
+            <Form.Group className="mb-3">
+              <Form.Label>Person Name *</Form.Label>
+              <Form.Control
+                value={person_name}
+                type="text"
+                placeholder="Enter Person Name"
+                onChange={(e) => setPerson_name(e.target.value)}
+              />
+            </Form.Group>
 
-          {/* Number 1 */}
-          <Form.Group className="mb-3">
-            <Form.Label>Contact Number</Form.Label>
-            <Form.Control
-              value={contact_number_1}
-              type="text"
-              placeholder="Enter Contact Number"
-              onChange={(e) => setContact_number_1(e.target.value)}
-            />
-          </Form.Group>
+            {/* Number 1 */}
+            <Form.Group className="mb-3">
+              <Form.Label>Contact Number</Form.Label>
+              <Form.Control
+                value={contact_number_1}
+                type="text"
+                placeholder="Enter Contact Number"
+                onChange={(e) => setContact_number_1(e.target.value)}
+              />
+            </Form.Group>
 
-          {/* Designation */}
-          <Form.Group className="mb-3">
-            <Form.Label>Designation</Form.Label>
-            <Form.Control
-              value={designation}
-              type="text"
-              placeholder="Enter Designation"
-              onChange={(e) => setDesignation(e.target.value)}
-            />
-          </Form.Group>
+            {/* Designation */}
+            <Form.Group className="mb-3">
+              <Form.Label>Designation</Form.Label>
+              <Form.Control
+                value={designation}
+                type="text"
+                placeholder="Enter Designation"
+                onChange={(e) => setDesignation(e.target.value)}
+              />
+            </Form.Group>
 
-          {/* Area */}
-          <Form.Group className="mb-3">
-            <Form.Label>Area</Form.Label>
-            <Form.Control
-              value={area}
-              type="text"
-              placeholder="Enter Area"
-              onChange={(e) => setArea(e.target.value)}
-            />
-          </Form.Group>
+            {/* Area */}
+            <Form.Group className="mb-3">
+              <Form.Label>Area</Form.Label>
+              <Form.Control
+                value={area}
+                type="text"
+                placeholder="Enter Area"
+                onChange={(e) => setArea(e.target.value)}
+              />
+            </Form.Group>
 
-          {/* disabled={category !== '-' ? true : null} */}
-          {/* Material Text box */}
-          <Form.Group className="mb-3">
-            <Form.Label>Material *</Form.Label>
-            <Form.Control
-              value={category}
-              type="text"
-              placeholder="Enter Material"
-              onChange={(e) => setCategory(e.target.value)}
-              onClick={textClickHandler}
-            />
-          </Form.Group>
+            {/* disabled={category !== '-' ? true : null} */}
+            {/* Material Text box */}
+            <Form.Group className="mb-3">
+              <Form.Label>Material *</Form.Label>
+              <Form.Control
+                value={category}
+                type="text"
+                placeholder="Enter Material"
+                onChange={(e) => setCategory(e.target.value)}
+                onClick={textClickHandler}
+              />
+            </Form.Group>
 
-          <Form.Text className="text-muted mb-3">OR</Form.Text>
+            <Form.Text className="text-muted mb-3">OR</Form.Text>
 
-          {/* Material Drop Down */}
-          <div className="mb-5 mt-3">
-            {!category_loading && (
-              <select
-                value={categoryDD}
-                onChange={(e) => setCategoryDD(e.target.value)}
-                onClick={ddClickHandler}
-              >
-                <option value="-">----</option>
-                {categories.map((category) => (
-                  <option key={category._id} value={category.name}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            )}
-          </div>
+            {/* Material Drop Down */}
+            <div className="mb-5 mt-3">
+              {!category_loading && (
+                <select
+                  value={categoryDD}
+                  onChange={(e) => setCategoryDD(e.target.value)}
+                  onClick={ddClickHandler}
+                >
+                  <option value="-">----</option>
+                  {categories.map((category) => (
+                    <option key={category._id} value={category.name}>
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              )}
+            </div>
 
-          {/* Plant Location */}
-          <Form.Group className="mb-3">
-            <Form.Label>Plant Location</Form.Label>
-            <Form.Control
-              value={plant_location}
-              type="text"
-              placeholder="Enter Plant Location"
-              onChange={(e) => setPlant_location(e.target.value)}
-            />
-          </Form.Group>
+            {/* Plant Location */}
+            <Form.Group className="mb-3">
+              <Form.Label>Plant Location</Form.Label>
+              <Form.Control
+                value={plant_location}
+                type="text"
+                placeholder="Enter Plant Location"
+                onChange={(e) => setPlant_location(e.target.value)}
+              />
+            </Form.Group>
 
-          {/* Vendor Classification */}
-          <Form.Group className="mb-3">
-            <Form.Label>Vendor Classification</Form.Label>
-            <Form.Control
-              value={vendor_classification}
-              type="text"
-              placeholder="Enter Vendor Classification"
-              onChange={(e) => setVendor_classification(e.target.value)}
-            />
-          </Form.Group>
+            {/* Vendor Classification */}
+            <Form.Group className="mb-3">
+              <Form.Label>Vendor Classification</Form.Label>
+              <Form.Control
+                value={vendor_classification}
+                type="text"
+                placeholder="Enter Vendor Classification"
+                onChange={(e) => setVendor_classification(e.target.value)}
+              />
+            </Form.Group>
 
-          {/* Email */}
-          <Form.Group className="mb-3">
-            <Form.Label>Mail ID</Form.Label>
-            <Form.Control
-              value={email}
-              type="text"
-              placeholder="Enter Mail ID"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
+            {/* Email */}
+            <Form.Group className="mb-3">
+              <Form.Label>Mail ID</Form.Label>
+              <Form.Control
+                value={email}
+                type="text"
+                placeholder="Enter Mail ID"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
 
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </FormContainer>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </Form>
+        </FormContainer>
+      )}
     </>
   )
 }

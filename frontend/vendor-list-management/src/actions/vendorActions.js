@@ -15,6 +15,9 @@ import {
   VENDOR_UPDATE_SUCCESS,
   VENDOR_UPDATE_FAIL,
   VENDOR_UPDATE_RESET,
+  VENDOR_DELETE_REQUEST,
+  VENDOR_DELETE_SUCCESS,
+  VENDOR_DELETE_FAIL,
 } from '../constants/vendorConstants'
 
 // 1. Get full vendor list
@@ -189,6 +192,37 @@ export const updateVendor = (id, update) => async (dispatch, getState) => {
   } catch (error) {
     dispatch({
       type: VENDOR_UPDATE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    })
+  }
+}
+
+// 8. Delete Vendor
+export const deleteVendor = (id) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: VENDOR_DELETE_REQUEST,
+    })
+    const {
+      userLogin: { userInfo },
+    } = getState()
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+    const res = await axios.delete(`/api/vendors/${id}`, config)
+    dispatch({
+      type: VENDOR_DELETE_SUCCESS,
+      payload: res.data,
+    })
+  } catch (error) {
+    dispatch({
+      type: VENDOR_DELETE_FAIL,
       payload:
         error.response && error.response.data.message
           ? error.response.data.message

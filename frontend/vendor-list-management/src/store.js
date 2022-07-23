@@ -7,6 +7,7 @@ import {
   vendorCreateReducer,
   vendorDetailsReducer,
   vendorUpdateReducer,
+  vendorDeleteReducer,
 } from './reducers/vendorReducers'
 import {
   categoryCreateReducer,
@@ -22,6 +23,7 @@ const reducer = combineReducers({
   vendorCreate: vendorCreateReducer,
   vendorDetails: vendorDetailsReducer,
   vendorUpdate: vendorUpdateReducer,
+  vendorDelete: vendorDeleteReducer,
 
   categoryList: categoryListReducer,
   categoryCreate: categoryCreateReducer,

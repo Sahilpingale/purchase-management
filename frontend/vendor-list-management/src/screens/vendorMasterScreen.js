@@ -9,6 +9,7 @@ import {
   getVendorByCategory,
   vendorDetailsReset,
   vendorUpdateReset,
+  deleteVendor,
 } from '../actions/vendorActions'
 import { listCategories } from '../actions/categoryActions'
 
@@ -16,18 +17,25 @@ const VendorMasterScreen = ({ history }) => {
   const dispatch = useDispatch()
 
   // --- useSelectors --- //
+  // 1. User Login
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
 
+  // 2. VendorList
   const vendorList = useSelector((state) => state.vendorList)
   const { loading, vendors, error } = vendorList
 
+  // 3. CategoryList
   const categoryList = useSelector((state) => state.categoryList)
   const {
     loading: category_loading,
     categories,
     error: category_error,
   } = categoryList
+
+  // 4. VendorDelete
+  const vendorDelete = useSelector((state) => state.vendorDelete)
+  const { success: deleteSuccess } = vendorDelete
 
   // --- useState --- //
   const [category, setCategory] = useState('All')
@@ -37,6 +45,10 @@ const VendorMasterScreen = ({ history }) => {
     if (!userInfo) {
       history.push('/login')
     } else {
+      // Resets
+      dispatch(vendorDetailsReset())
+      dispatch(vendorUpdateReset())
+
       dispatch(listCategories())
       if (category === 'All') {
         dispatch(listVendors())
@@ -44,11 +56,17 @@ const VendorMasterScreen = ({ history }) => {
         dispatch(getVendorByCategory({ category }))
       }
     }
-  }, [category])
+  }, [category, deleteSuccess])
 
   // --- Handlers --- //
   const test = (e) => {
     setCategory(e.target.value)
+  }
+
+  const deleteHandler = (id) => {
+    if (window.confirm('Are you want to delete?')) {
+      dispatch(deleteVendor(id))
+    }
   }
 
   return (
@@ -115,7 +133,11 @@ const VendorMasterScreen = ({ history }) => {
                   </LinkContainer>
                 </td>
                 <td>
-                  <Button variant="light" className="btn-sm">
+                  <Button
+                    onClick={() => deleteHandler(vendor._id)}
+                    variant="light"
+                    className="btn-sm"
+                  >
                     <i className="fas fa-trash" style={{ color: 'red' }}></i>
                   </Button>
                 </td>

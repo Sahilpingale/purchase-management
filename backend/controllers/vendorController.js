@@ -125,10 +125,26 @@ const updateVendor = asyncHandler(async (req, res) => {
   }
 })
 
+// @desc    Delete Vendor
+// @route   DELETE /api/vendors/:id
+// @access  Private
+
+const deleteVendor = asyncHandler(async (req, res) => {
+  const vendor = await Vendor.findById(req.params.id)
+  if (vendor) {
+    await vendor.remove()
+    res.json({ message: 'Vendor removed' })
+  } else {
+    res.status(404)
+    throw new Error('Vendor not found')
+  }
+})
+
 export {
   getAllVendors,
   getVendorByCategory,
   createVendor,
   getVendorById,
   updateVendor,
+  deleteVendor,
 }
