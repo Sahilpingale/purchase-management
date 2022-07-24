@@ -55,6 +55,9 @@ const getItemByCategory = asyncHandler(async (req, res) => {
   res.json(item)
 })
 
+// @desc    Delete Item
+// @route   DELETE /api/items/:id
+// @access  Private
 const deleteItem = asyncHandler(async (req, res) => {
   const item = await Item.findById(req.params.id)
   if (item) {
@@ -66,4 +69,55 @@ const deleteItem = asyncHandler(async (req, res) => {
   }
 })
 
-export { getAllItems, createItems, getItemByCategory, deleteItem }
+// @desc    Get Item by ID
+// @route   GET /api/items/:id
+// @access  Private
+
+const getItemById = asyncHandler(async (req, res) => {
+  const item = await Item.findById(req.params.id)
+
+  if (item) {
+    res.json(item)
+  } else {
+    res.status(404)
+    throw new Error('Item not found')
+  }
+})
+
+// @desc    Update Item
+// @route   PUT /api/items/:id
+// @access  Private
+
+const updateItem = asyncHandler(async (req, res) => {
+  const item = await Item.findById(req.params.id)
+
+  if (item) {
+    item.name = req.body.name || item.name
+    item.unitOfMeasurement =
+      req.body.unitOfMeasurement || item.unitOfMeasurement
+    item.vendorName = req.body.vendorName || item.vendorName
+    item.clientName = req.body.clientName || item.clientName
+    item.rate = req.body.rate || item.rate
+    item.taxAmount = req.body.taxAmount || item.taxAmount
+    item.additionalCost = req.body.additionalCost || item.additionalCost
+    item.dateOfPurchase = req.body.dateOfPurchase || item.dateOfPurchase
+
+    const updatedItem = await item.save()
+
+    res.json({
+      message: 'Item Updated Successfully!',
+    })
+  } else {
+    res.status(404)
+    throw new Error('Item not found')
+  }
+})
+
+export {
+  getAllItems,
+  createItems,
+  getItemByCategory,
+  getItemById,
+  deleteItem,
+  updateItem,
+}

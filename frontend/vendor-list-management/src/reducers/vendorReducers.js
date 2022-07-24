@@ -17,6 +17,7 @@ import {
   VENDOR_DELETE_REQUEST,
   VENDOR_DELETE_SUCCESS,
   VENDOR_DELETE_FAIL,
+  VENDOR_CREATE_RESET,
 } from '../constants/vendorConstants'
 
 // 1. Get Vendor List
@@ -63,6 +64,11 @@ export const vendorCreateReducer = (state = {}, action) => {
         loading: false,
         error: payload,
       }
+    case VENDOR_CREATE_RESET: {
+      return {
+        state: {},
+      }
+    }
     default:
       return state
   }

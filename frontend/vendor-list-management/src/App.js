@@ -11,6 +11,7 @@ import VendorCreateScreen from './screens/VendorCreateScreen'
 import VendorUpdateScreen from './screens/VendorUpdateScreen'
 import ItemCreateScreen from './screens/ItemCreateScreen'
 import ItemViewScreen from './screens/ItemViewScreen'
+import ItemUpdateScreen from './screens/ItemUpdateScreen'
 import HomePage from './screens/HomePage'
 
 // import 'bootstrap/dist/css/bootstrap.min.css'
@@ -26,6 +27,7 @@ function App() {
           <Route path="/vendorMaster" component={VendorMasterScreen} />
           <Route path="/vendorCreate" component={VendorCreateScreen} />
           <Route path="/vendors/:id" component={VendorUpdateScreen} />
+          <Route path="/items/:id" component={ItemUpdateScreen} />
           <Route path="/itemMaster" component={ItemViewScreen} />
           <Route path="/itemCreate" component={ItemCreateScreen} />
           <Route path="/" component={HomePage} exact />

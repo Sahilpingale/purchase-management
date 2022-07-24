@@ -11,6 +11,7 @@ import {
   vendorUpdateReset,
   deleteVendor,
 } from '../actions/vendorActions'
+import { itemDetailsReset, itemUpdateReset } from '../actions/itemActions'
 import { listCategories } from '../actions/categoryActions'
 
 const VendorMasterScreen = ({ history }) => {
@@ -48,6 +49,8 @@ const VendorMasterScreen = ({ history }) => {
       // Resets
       dispatch(vendorDetailsReset())
       dispatch(vendorUpdateReset())
+      dispatch(itemDetailsReset())
+      dispatch(itemUpdateReset())
 
       dispatch(listCategories())
       if (category === 'All') {

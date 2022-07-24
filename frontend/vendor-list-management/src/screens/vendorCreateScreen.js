@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { listCategories, createCategories } from '../actions/categoryActions'
-import { createVendor } from '../actions/vendorActions'
+import { createVendor, vendorCreateReset } from '../actions/vendorActions'
 import Message from '../components/Message'
 
 const VendorCreateScreen = ({ history }) => {
@@ -48,9 +48,13 @@ const VendorCreateScreen = ({ history }) => {
       console.log('t1')
       history.push('/login')
     } else {
+      if (vendorCreateSuccess) {
+        history.push('/vendorMaster')
+        dispatch(vendorCreateReset())
+      }
       dispatch(listCategories())
     }
-  }, [])
+  }, [vendorCreateSuccess])
 
   const submitHandler = (e) => {
     e.preventDefault()

@@ -18,6 +18,7 @@ import {
   VENDOR_DELETE_REQUEST,
   VENDOR_DELETE_SUCCESS,
   VENDOR_DELETE_FAIL,
+  VENDOR_CREATE_RESET,
 } from '../constants/vendorConstants'
 
 // 1. Get full vendor list
@@ -229,4 +230,11 @@ export const deleteVendor = (id) => async (dispatch, getState) => {
           : error.message,
     })
   }
+}
+
+//9. VENDOR_CREATE_RESET
+export const vendorCreateReset = () => async (dispatch) => {
+  dispatch({
+    type: VENDOR_CREATE_RESET,
+  })
 }

@@ -117,7 +117,7 @@ const updateVendor = asyncHandler(async (req, res) => {
     const updatedVendor = await vendor.save()
 
     res.json({
-      message: 'Vendor Updates Successfully!',
+      message: 'Vendor Updated Successfully!',
     })
   } else {
     res.status(404)

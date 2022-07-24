@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { listCategories, createCategories } from '../actions/categoryActions'
-import { createItem } from '../actions/itemActions'
+import { createItem, itemCreateReset } from '../actions/itemActions'
 import Message from '../components/Message'
 
 const ItemCreateScreen = ({ history }) => {
@@ -47,9 +47,13 @@ const ItemCreateScreen = ({ history }) => {
     if (!userInfo) {
       history.push('/login')
     } else {
+      if (itemCreateSuccess) {
+        history.push('/itemMaster')
+        dispatch(itemCreateReset())
+      }
       dispatch(listCategories())
     }
-  }, [history, dispatch, userInfo])
+  }, [history, dispatch, userInfo, itemCreateSuccess])
 
   //--- Handlers ---//
   const submitHandler = (e) => {
