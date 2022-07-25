@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import { Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { listItems } from '../actions/itemActions'
 import { Table, Button } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
+import SearchBox from '../components/SearchBox'
 import { listCategories } from '../actions/categoryActions'
 import {
   getItemByCategory,
@@ -14,8 +16,9 @@ import {
 } from '../actions/itemActions'
 import { vendorDetailsReset, vendorUpdateReset } from '../actions/vendorActions'
 
-const ItemViewScreen = ({ history }) => {
+const ItemViewScreen = ({ history, match }) => {
   const dispatch = useDispatch()
+  const keyword = match.params.keyword
 
   const [category, setCategory] = useState('All')
 
@@ -53,12 +56,12 @@ const ItemViewScreen = ({ history }) => {
 
       dispatch(listCategories())
       if (category === 'All') {
-        dispatch(listItems())
+        dispatch(listItems(keyword))
       } else {
         dispatch(getItemByCategory({ category }))
       }
     }
-  }, [category, history, userInfo, itemDeleteSuccess])
+  }, [category, keyword, history, userInfo, itemDeleteSuccess])
 
   // --- Handlers ---//
   const test = (e) => {
@@ -72,31 +75,48 @@ const ItemViewScreen = ({ history }) => {
   }
   return (
     <>
+      <h2>Item Master</h2>
+      {/* If Errors */}
       {itemListError && <Message variant="danger">{itemListError}</Message>}
       {categoryError && <Message variant="danger">{categoryError}</Message>}
 
-      {!categoryLoading && (
-        <select value={category} onChange={test}>
-          <option value="All">All</option>
-          {categories.map((category) => (
-            <option key={category._id} value={category.name}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      )}
+      <div className="flex">
+        {/* Category Dropdown */}
+        {!categoryLoading && (
+          <select className="dropdown" value={category} onChange={test}>
+            <option value="All">All</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        )}
+
+        {/* Search Box */}
+        {!categoryLoading && (
+          <Route
+            render={({ history }) => (
+              <SearchBox history={history} search="itemMaster" />
+            )}
+          />
+        )}
+      </div>
+
+      {/* Table */}
       {itemListLoading ? (
         <Loader />
       ) : (
         <Table striped bordered hover responsive className="table-sm">
           <thead>
             <tr>
-              <th>Purchased Item</th>
+              <th>Item</th>
               <th>Vendor Name</th>
-              <th>Client Name</th>
-              <th>Rate</th>
-              <th>Tax Amount</th>
-              <th>Additional Cost</th>
+              <th>Project Name</th>
+              <th>UOM</th>
+              <th>Basic Rate</th>
+              <th>GST</th>
+              <th>Total</th>
               <th>Date Of Purchase</th>
             </tr>
           </thead>
@@ -106,9 +126,10 @@ const ItemViewScreen = ({ history }) => {
                 <td>{item.name}</td>
                 <td>{item.vendorName}</td>
                 <td>{item.clientName}</td>
+                <td>{item.unitOfMeasurement}</td>
                 <td>{item.rate}</td>
-                <td>{item.taxAmount}</td>
-                <td>{item.additionalCost}</td>
+                <td>{item.taxAmount}%</td>
+                <td>{(item.rate * item.taxAmount) / 100 + item.rate}</td>
                 <td>{item.dateOfPurchase}</td>
                 <td>
                   <LinkContainer to={`/items/${item._id}`}>

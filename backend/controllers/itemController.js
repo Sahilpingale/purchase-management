@@ -6,7 +6,21 @@ import asyncHandler from 'express-async-handler'
 // @access  Private
 
 const getAllItems = asyncHandler(async (req, res) => {
-  const items = await Item.find({})
+  const keyword = req.query.keyword
+    ? {
+        vendorName: {
+          $regex: req.query.keyword,
+          $options: 'i',
+        },
+      }
+    : {}
+  // const items = await Item.find({ ...keyword }).sort({ _id: -1 })
+  const items = await Item.find({
+    $or: [
+      { vendorName: { $regex: `${req.query.keyword}`, $options: 'i' } },
+      { clientName: { $regex: `${req.query.keyword}`, $options: 'i' } },
+    ],
+  }).sort({ _id: -1 })
   res.send(items)
 })
 
@@ -17,23 +31,23 @@ const getAllItems = asyncHandler(async (req, res) => {
 const createItems = asyncHandler(async (req, res) => {
   const {
     name,
-    unitOfMeasurement,
     vendorName,
     clientName,
-    rate,
     taxAmount,
-    additionalCost,
+    rate,
+    unitOfMeasurement,
+    total,
     dateOfPurchase,
   } = req.body
 
   const item = await Item.create({
     name,
-    unitOfMeasurement,
     vendorName,
     clientName,
     rate,
     taxAmount,
-    additionalCost,
+    unitOfMeasurement,
+    total,
     dateOfPurchase,
   })
 
@@ -93,13 +107,13 @@ const updateItem = asyncHandler(async (req, res) => {
 
   if (item) {
     item.name = req.body.name || item.name
-    item.unitOfMeasurement =
-      req.body.unitOfMeasurement || item.unitOfMeasurement
     item.vendorName = req.body.vendorName || item.vendorName
     item.clientName = req.body.clientName || item.clientName
     item.rate = req.body.rate || item.rate
     item.taxAmount = req.body.taxAmount || item.taxAmount
-    item.additionalCost = req.body.additionalCost || item.additionalCost
+    item.unitOfMeasurement =
+      req.body.unitOfMeasurement || item.unitOfMeasurement
+    item.total = req.body.total || item.total
     item.dateOfPurchase = req.body.dateOfPurchase || item.dateOfPurchase
 
     const updatedItem = await item.save()

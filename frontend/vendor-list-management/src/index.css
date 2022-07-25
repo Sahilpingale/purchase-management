@@ -1,9 +1,25 @@
-.hide {
-  color: red;
-}
 .links:link,
 .links:visited {
   text-decoration: none;
   color: black;
   cursor: pointer;
+}
+
+.flex {
+  display: flex;
+  margin-block: 1.2rem;
+  gap: 2.4rem;
+}
+.space-around {
+  justify-content: space-around;
+}
+.dropdown {
+  width: 8.4rem;
+}
+
+@media (max-width: 576px) {
+  .flex {
+    gap: 1.2rem;
+    flex-direction: column;
+  }
 }

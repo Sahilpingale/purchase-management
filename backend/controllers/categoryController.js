@@ -5,7 +5,7 @@ import asyncHandler from 'express-async-handler'
 // @route   GET /api/category
 // @access  Private
 const getAllCategories = asyncHandler(async (req, res) => {
-  const Categories = await Category.find({})
+  const Categories = await Category.find({}).sort({ name: 1 })
   res.json(Categories)
 })
 

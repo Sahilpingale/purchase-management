@@ -24,12 +24,22 @@ function App() {
         <Container>
           <Route path="/login" component={LoginScreen} />
           <Route path="/register" component={RegisterScreen} />
-          <Route path="/vendorMaster" component={VendorMasterScreen} />
+          <Route path="/vendorMaster" component={VendorMasterScreen} exact />
           <Route path="/vendorCreate" component={VendorCreateScreen} />
           <Route path="/vendors/:id" component={VendorUpdateScreen} />
           <Route path="/items/:id" component={ItemUpdateScreen} />
-          <Route path="/itemMaster" component={ItemViewScreen} />
+          <Route path="/itemMaster" component={ItemViewScreen} exact />
           <Route path="/itemCreate" component={ItemCreateScreen} />
+          <Route
+            path="/vendorMaster/search/:keyword"
+            component={VendorMasterScreen}
+            exact
+          />
+          <Route
+            path="/itemMaster/search/:keyword"
+            component={ItemViewScreen}
+            exact
+          />
           <Route path="/" component={HomePage} exact />
         </Container>
       </main>

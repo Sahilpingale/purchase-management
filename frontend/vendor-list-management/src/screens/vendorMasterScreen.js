@@ -13,9 +13,12 @@ import {
 } from '../actions/vendorActions'
 import { itemDetailsReset, itemUpdateReset } from '../actions/itemActions'
 import { listCategories } from '../actions/categoryActions'
+import { Route } from 'react-router-dom'
+import SearchBox from '../components/SearchBox'
 
-const VendorMasterScreen = ({ history }) => {
+const VendorMasterScreen = ({ history, match }) => {
   const dispatch = useDispatch()
+  const keyword = match.params.keyword
 
   // --- useSelectors --- //
   // 1. User Login
@@ -54,12 +57,12 @@ const VendorMasterScreen = ({ history }) => {
 
       dispatch(listCategories())
       if (category === 'All') {
-        dispatch(listVendors())
+        dispatch(listVendors(keyword))
       } else {
         dispatch(getVendorByCategory({ category }))
       }
     }
-  }, [category, deleteSuccess])
+  }, [category, deleteSuccess, keyword])
 
   // --- Handlers --- //
   const test = (e) => {
@@ -74,18 +77,35 @@ const VendorMasterScreen = ({ history }) => {
 
   return (
     <>
+      <h2>Vendor Master</h2>
+      {/* If Errors */}
       {error && <Message variant="danger">{error}</Message>}
       {category_error && <Message variant="danger">{category_error}</Message>}
-      {!category_loading && (
-        <select value={category} onChange={test}>
-          <option value="All">All</option>
-          {categories.map((category) => (
-            <option key={category._id} value={category.name}>
-              {category.name}
-            </option>
-          ))}
-        </select>
-      )}
+
+      <div className="flex">
+        {/* Category Dropdown */}
+        {!category_loading && (
+          <select className="dropdown" value={category} onChange={test}>
+            <option value="All">All</option>
+            {categories.map((category) => (
+              <option key={category._id} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+        )}
+
+        {/* Search Box */}
+        {!category_loading && (
+          <Route
+            render={({ history }) => (
+              <SearchBox history={history} search="vendorMaster" />
+            )}
+          />
+        )}
+      </div>
+
+      {/* Table */}
       {loading ? (
         <Loader />
       ) : (
@@ -96,7 +116,7 @@ const VendorMasterScreen = ({ history }) => {
               <th>Person Name</th>
               <th>Contact Number</th>
               <th>Designation</th>
-              <th>&nbsp;Area&nbsp;</th>
+              <th>Area</th>
               <th>Material</th>
               <th>Plant Location</th>
               <th>Vendor Classification</th>

@@ -53,7 +53,6 @@ const ItemCreateScreen = ({ history, match }) => {
   const [clientName, setClientName] = useState('')
   const [rate, setRate] = useState('')
   const [taxAmount, setTaxAmount] = useState('')
-  const [additionalCost, setAdditionalCost] = useState('')
   const [dateOfPurchase, setDateofPurchase] = useState('')
 
   //--- useEffect ---//
@@ -70,10 +69,9 @@ const ItemCreateScreen = ({ history, match }) => {
         } else {
           setNameDD(item.name)
           setUnitOfMeasurement(item.unitOfMeasurement)
-          setAdditionalCost(item.additionalCost)
-          setTaxAmount(item.taxAmount)
           setClientName(item.clientName)
           setVendorName(item.vendorName)
+          setTaxAmount(item.taxAmount)
           setRate(item.rate)
         }
       }
@@ -92,7 +90,7 @@ const ItemCreateScreen = ({ history, match }) => {
           clientName,
           rate,
           taxAmount,
-          additionalCost,
+          unitOfMeasurement,
           dateOfPurchase,
         })
       )
@@ -106,7 +104,7 @@ const ItemCreateScreen = ({ history, match }) => {
           clientName,
           rate,
           taxAmount,
-          additionalCost,
+          unitOfMeasurement,
           dateOfPurchase,
         })
       )
@@ -190,7 +188,7 @@ const ItemCreateScreen = ({ history, match }) => {
 
             {/* Client Name */}
             <Form.Group className="mt-2 mb-3">
-              <Form.Label>Client Name *</Form.Label>
+              <Form.Label>Project Name *</Form.Label>
               <Form.Control
                 value={clientName}
                 type="text"
@@ -199,13 +197,13 @@ const ItemCreateScreen = ({ history, match }) => {
               />
             </Form.Group>
 
-            {/* Unit of Measurement */}
+            {/* Unit Of Measurement */}
             <Form.Group className="mt-2 mb-3">
-              <Form.Label>Unit of Measurement *</Form.Label>
+              <Form.Label>UOM *</Form.Label>
               <Form.Control
                 value={unitOfMeasurement}
                 type="text"
-                placeholder="Enter Unit of Measurement (Area, length, units)"
+                placeholder="Enter UOM"
                 onChange={(e) => setUnitOfMeasurement(e.target.value)}
               />
             </Form.Group>
@@ -221,25 +219,14 @@ const ItemCreateScreen = ({ history, match }) => {
               />
             </Form.Group>
 
-            {/* Tax Amount */}
+            {/* Tax amount */}
             <Form.Group className="mt-2 mb-3">
-              <Form.Label>Tax Amount</Form.Label>
+              <Form.Label>GST *</Form.Label>
               <Form.Control
                 value={taxAmount}
                 type="text"
-                placeholder="Enter Tax Amount"
+                placeholder="Enter GST"
                 onChange={(e) => setTaxAmount(e.target.value)}
-              />
-            </Form.Group>
-
-            {/* Additional Cost */}
-            <Form.Group className="mt-2 mb-3">
-              <Form.Label>Additional Cost</Form.Label>
-              <Form.Control
-                value={additionalCost}
-                type="text"
-                placeholder="Enter Additional Cost"
-                onChange={(e) => setAdditionalCost(e.target.value)}
               />
             </Form.Group>
 

@@ -22,37 +22,40 @@ import {
 } from '../constants/itemConstants'
 
 // 1.Get all Items
-export const listItems = () => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: ITEM_LIST_REQUEST,
-    })
-    const {
-      userLogin: { userInfo },
-    } = getState()
+export const listItems =
+  (keyword = '') =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: ITEM_LIST_REQUEST,
+      })
+      const {
+        userLogin: { userInfo },
+      } = getState()
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+      const config = {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+      console.log(keyword)
+      const res = await axios.get(`/api/items?keyword=${keyword}`, config)
+      // const res = await axios.get(`/api/items`, config)
+
+      dispatch({
+        type: ITEM_LIST_SUCCESS,
+        payload: res.data,
+      })
+    } catch (error) {
+      dispatch({
+        type: ITEM_LIST_FAIL,
+        payload:
+          error.response && error.response.data.message
+            ? error.response.data.message
+            : error.message,
+      })
     }
-
-    const res = await axios.get('api/items', config)
-
-    dispatch({
-      type: ITEM_LIST_SUCCESS,
-      payload: res.data,
-    })
-  } catch (error) {
-    dispatch({
-      type: ITEM_LIST_FAIL,
-      payload:
-        error.response && error.response.data.message
-          ? error.response.data.message
-          : error.message,
-    })
   }
-}
 
 // 2. Create Item
 export const createItem = (details) => async (dispatch, getState) => {
@@ -71,7 +74,7 @@ export const createItem = (details) => async (dispatch, getState) => {
       },
     }
 
-    const res = await axios.post('api/items', details, config)
+    const res = await axios.post('/api/items', details, config)
 
     dispatch({
       type: ITEM_CREATE_SUCCESS,

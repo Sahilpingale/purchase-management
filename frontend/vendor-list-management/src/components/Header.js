@@ -19,7 +19,7 @@ const Header = ({ history }) => {
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         {/* <Navbar bg="light" variant="light" expand="lg" collapseOnSelect> */}
         <Container>
-          <Navbar.Brand href="/vendorMaster">Vendor Management</Navbar.Brand>
+          <Navbar.Brand href="/vendorMaster">Purchase Management</Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto">

@@ -7,8 +7,13 @@ import generateToken from '../utils/generateToken.js'
 // @access  Private
 
 const getAllVendors = asyncHandler(async (req, res) => {
-  const vendors = await Vendor.find({})
-  res.json(vendors)
+  const result = await Vendor.find({
+    $or: [
+      { company: { $regex: `${req.query.keyword}`, $options: 'i' } },
+      { person_name: { $regex: `${req.query.keyword}`, $options: 'i' } },
+    ],
+  })
+  res.json(result)
 })
 
 // @desc    Find by category

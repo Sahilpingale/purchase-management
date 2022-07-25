@@ -22,10 +22,8 @@ const itemSchema = mongoose.Schema({
     required: true,
   },
   taxAmount: {
-    type: Number,
-  },
-  additionalCost: {
-    type: Number,
+    type: String,
+    required: true,
   },
   dateOfPurchase: {
     type: String,
