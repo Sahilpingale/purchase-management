@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
 
-const SearchBox = ({ history, search }) => {
+const SearchBox = ({ history, search, resetCategoryFunc: resetCategory }) => {
   const [keyword, setKeyword] = useState('')
 
   // --- Handlers --- //
@@ -9,21 +8,26 @@ const SearchBox = ({ history, search }) => {
     e.preventDefault()
     if (keyword.trim()) {
       history.push(`/${search}/search/${keyword}`)
+      resetCategory()
     } else {
       history.push(`/${search}`)
     }
   }
+
   return (
     <>
-      <form onSubmit={submitHandler} inline>
+      <form className="" onSubmit={submitHandler}>
         <input
           type="text"
           name="q"
           onChange={(e) => setKeyword(e.target.value)}
           placeholder="Search"
-          className="mr-sm-2 ml-sm-5"
+          autoComplete="off"
+          className="custom-input me-2"
         ></input>
-        <button type="submit">Search</button>
+        <button className="custom-button" type="submit">
+          Search
+        </button>
       </form>
     </>
   )

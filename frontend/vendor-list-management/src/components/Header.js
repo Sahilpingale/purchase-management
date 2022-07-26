@@ -45,7 +45,17 @@ const Header = ({ history }) => {
                     </LinkContainer>
                   </NavDropdown>
 
-                  <Nav.Link onClick={logoutHandler}>Sign out</Nav.Link>
+                  {/* Profile Dropdown */}
+                  <NavDropdown title={userInfo.username}>
+                    <LinkContainer to="/editProfile">
+                      <NavDropdown.Item>Edit Profile</NavDropdown.Item>
+                    </LinkContainer>
+                    <NavDropdown.Item onClick={logoutHandler}>
+                      Sign Out
+                    </NavDropdown.Item>
+                  </NavDropdown>
+
+                  {/* <Nav.Link onClick={logoutHandler}>Sign out</Nav.Link> */}
                 </>
               ) : (
                 <Nav.Link href="/login">Sign In</Nav.Link>

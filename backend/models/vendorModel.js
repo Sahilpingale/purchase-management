@@ -33,6 +33,9 @@ const vendorSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    remarks: {
+      type: String,
+    },
   },
   {
     timestamps: true,

@@ -13,6 +13,7 @@ import {
 } from '../actions/vendorActions'
 import { itemDetailsReset, itemUpdateReset } from '../actions/itemActions'
 import { listCategories } from '../actions/categoryActions'
+import { userDetailsReset } from '../actions/userActions'
 import { Route } from 'react-router-dom'
 import SearchBox from '../components/SearchBox'
 
@@ -54,6 +55,7 @@ const VendorMasterScreen = ({ history, match }) => {
       dispatch(vendorUpdateReset())
       dispatch(itemDetailsReset())
       dispatch(itemUpdateReset())
+      dispatch(userDetailsReset())
 
       dispatch(listCategories())
       if (category === 'All') {
@@ -62,7 +64,7 @@ const VendorMasterScreen = ({ history, match }) => {
         dispatch(getVendorByCategory({ category }))
       }
     }
-  }, [category, deleteSuccess, keyword])
+  }, [dispatch, history, userInfo, category, deleteSuccess, keyword])
 
   // --- Handlers --- //
   const test = (e) => {
@@ -74,10 +76,13 @@ const VendorMasterScreen = ({ history, match }) => {
       dispatch(deleteVendor(id))
     }
   }
+  const resetCategory = () => {
+    setCategory('All')
+  }
 
   return (
     <>
-      <h2>Vendor Master</h2>
+      <h2 className="mb-4">Vendor Master</h2>
       {/* If Errors */}
       {error && <Message variant="danger">{error}</Message>}
       {category_error && <Message variant="danger">{category_error}</Message>}
@@ -85,23 +90,36 @@ const VendorMasterScreen = ({ history, match }) => {
       <div className="flex">
         {/* Category Dropdown */}
         {!category_loading && (
-          <select className="dropdown" value={category} onChange={test}>
-            <option value="All">All</option>
-            {categories.map((category) => (
-              <option key={category._id} value={category.name}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          <div>
+            <p className="category-tag">Category</p>
+            <select
+              className="dropdown custom-select"
+              value={category}
+              onChange={test}
+            >
+              <option value="All">All</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
         )}
 
         {/* Search Box */}
         {!category_loading && (
-          <Route
-            render={({ history }) => (
-              <SearchBox history={history} search="vendorMaster" />
-            )}
-          />
+          <div>
+            <Route
+              render={({ history }) => (
+                <SearchBox
+                  history={history}
+                  search="vendorMaster"
+                  resetCategoryFunc={resetCategory}
+                />
+              )}
+            />
+          </div>
         )}
       </div>
 
@@ -113,14 +131,26 @@ const VendorMasterScreen = ({ history, match }) => {
           <thead>
             <tr>
               <th>Company</th>
-              <th>Person Name</th>
-              <th>Contact Number</th>
+              <th>Name</th>
+              <th>Contact </th>
               <th>Designation</th>
               <th>Area</th>
               <th>Material</th>
-              <th>Plant Location</th>
-              <th>Vendor Classification</th>
+              <th>
+                {/* <p className="invisibl">................................</p> */}
+                Plant_Location
+              </th>
+              <th>
+                {/* <p className="invisible">...........................</p> */}
+                Vendor_Classification{' '}
+              </th>
               <th>Mail ID</th>
+              <th>
+                <p className="invisible">
+                  .............................................................
+                </p>
+                Remarks
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -148,6 +178,7 @@ const VendorMasterScreen = ({ history, match }) => {
                     {vendor.email}
                   </a>
                 </td>
+                <td>{vendor.remarks}</td>
                 <td>
                   <LinkContainer to={`/vendors/${vendor._id}`}>
                     <Button variant="light" className="btn-sm">

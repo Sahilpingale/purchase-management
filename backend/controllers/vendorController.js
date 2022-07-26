@@ -41,6 +41,7 @@ const createVendor = asyncHandler(async (req, res) => {
     vendor_classification,
     email,
     category,
+    remarks,
   } = req.body
 
   const vendorExists = await Vendor.findOne({ person_name })
@@ -64,6 +65,7 @@ const createVendor = asyncHandler(async (req, res) => {
     vendor_classification,
     email,
     category,
+    remarks,
   })
 
   if (vendor) {
@@ -77,6 +79,7 @@ const createVendor = asyncHandler(async (req, res) => {
       vendor_classification: vendor.vendor_classification,
       email: vendor.email,
       category: vendor.category,
+      remarks: vendor.remarks,
     })
   } else {
     res.status(400)
@@ -114,6 +117,7 @@ const updateVendor = asyncHandler(async (req, res) => {
     vendor.designation = req.body.designation || vendor.designation
     vendor.area = req.body.area || vendor.area
     vendor.email = req.body.email || vendor.email
+    vendor.remarks = req.body.remarks || vendor.remarks
     vendor.plant_location = req.body.plant_location || vendor.plant_location
     vendor.category = req.body.category || vendor.category
     vendor.vendor_classification =

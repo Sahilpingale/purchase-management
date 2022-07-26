@@ -3,12 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { listCategories, createCategories } from '../actions/categoryActions'
-import {
-  getVendorDetailsById,
-  vendorDetailsReset,
-  vendorUpdateReset,
-  updateVendor,
-} from '../actions/vendorActions'
+import { getVendorDetailsById, updateVendor } from '../actions/vendorActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
@@ -43,11 +38,7 @@ const VendorUpdateScreen = ({ history, match }) => {
 
   // 5.Vendor Details
   const vendorDetails = useSelector((state) => state.vendorDetails)
-  const {
-    loading: vendorDetailsLoading,
-    error: vendorDetailsError,
-    vendor,
-  } = vendorDetails
+  const { loading: vendorDetailsLoading, vendor } = vendorDetails
 
   //--- useState for form ---//
   const [company, setCompany] = useState(vendor.company)
@@ -58,6 +49,7 @@ const VendorUpdateScreen = ({ history, match }) => {
   const [plant_location, setPlant_location] = useState('')
   const [vendor_classification, setVendor_classification] = useState('')
   const [email, setEmail] = useState('')
+  const [remarks, setRemarks] = useState('')
   const [category, setCategory] = useState('')
   const [categoryDD, setCategoryDD] = useState('')
 
@@ -81,10 +73,11 @@ const VendorUpdateScreen = ({ history, match }) => {
         setPlant_location(vendor.plant_location)
         setVendor_classification(vendor.vendor_classification)
         setEmail(vendor.email)
+        setRemarks(vendor.remarks)
         setCategoryDD(vendor.category)
       }
     }
-  }, [userId, vendor, vendorUpdateSuccess])
+  }, [dispatch, history, userInfo, userId, vendor, vendorUpdateSuccess])
 
   // ---Handlers ---//
   const submitHandler = (e) => {
@@ -101,6 +94,7 @@ const VendorUpdateScreen = ({ history, match }) => {
           plant_location,
           vendor_classification,
           email,
+          remarks,
         })
       )
       dispatch(createCategories(category))
@@ -116,6 +110,7 @@ const VendorUpdateScreen = ({ history, match }) => {
           plant_location,
           vendor_classification,
           email,
+          remarks,
         })
       )
     }
@@ -210,7 +205,7 @@ const VendorUpdateScreen = ({ history, match }) => {
 
             {/* disabled={category !== '-' ? true : null} */}
             {/* Material Text box */}
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-1">
               <Form.Label>Material *</Form.Label>
               <Form.Control
                 value={category}
@@ -221,15 +216,18 @@ const VendorUpdateScreen = ({ history, match }) => {
               />
             </Form.Group>
 
-            <Form.Text className="text-muted mb-3">OR</Form.Text>
+            <Form.Text className="text-muted mb-1">
+              &nbsp;&nbsp;&nbsp;OR Choose from Dropdown
+            </Form.Text>
 
             {/* Material Drop Down */}
-            <div className="mb-5 mt-3">
+            <div className="mb-3 mt-1">
               {!category_loading && (
                 <select
                   value={categoryDD}
                   onChange={(e) => setCategoryDD(e.target.value)}
                   onClick={ddClickHandler}
+                  className="width-100"
                 >
                   <option value="-">----</option>
                   {categories.map((category) => (
@@ -271,6 +269,17 @@ const VendorUpdateScreen = ({ history, match }) => {
                 type="text"
                 placeholder="Enter Mail ID"
                 onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
+
+            {/* Remarks */}
+            <Form.Group className="mb-3">
+              <Form.Label>Remarks</Form.Label>
+              <Form.Control
+                value={remarks}
+                type="text"
+                placeholder="Enter Remarks"
+                onChange={(e) => setRemarks(e.target.value)}
               />
             </Form.Group>
 

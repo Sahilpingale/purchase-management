@@ -21,15 +21,11 @@ const VendorCreateScreen = ({ history }) => {
   } = categoryList
 
   const categoryCreate = useSelector((state) => state.categoryCreate)
-  const { loading: categoryCreateLoading, error: categoryCreateError } =
-    categoryCreate
+  const { error: categoryCreateError } = categoryCreate
 
   const vendorCreate = useSelector((state) => state.vendorCreate)
-  const {
-    success: vendorCreateSuccess,
-    loading: vendorCreateLoading,
-    error: vendorCreateError,
-  } = vendorCreate
+  const { success: vendorCreateSuccess, error: vendorCreateError } =
+    vendorCreate
 
   // useState for form
   const [company, setCompany] = useState('')
@@ -42,6 +38,7 @@ const VendorCreateScreen = ({ history }) => {
   const [email, setEmail] = useState('')
   const [category, setCategory] = useState('')
   const [categoryDD, setCategoryDD] = useState('')
+  const [remarks, setRemarks] = useState('')
 
   useEffect(() => {
     if (!userInfo) {
@@ -54,7 +51,7 @@ const VendorCreateScreen = ({ history }) => {
       }
       dispatch(listCategories())
     }
-  }, [vendorCreateSuccess])
+  }, [dispatch, history, userInfo, vendorCreateSuccess])
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -70,6 +67,7 @@ const VendorCreateScreen = ({ history }) => {
           plant_location,
           vendor_classification,
           email,
+          remarks,
         })
       )
       dispatch(createCategories(category))
@@ -85,17 +83,9 @@ const VendorCreateScreen = ({ history }) => {
           plant_location,
           vendor_classification,
           email,
+          remarks,
         })
       )
-    }
-    if (
-      // !vendorCreateLoading &&
-      // !categoryCreateLoading &&
-      !categoryCreateError &&
-      !vendorCreateError
-    ) {
-      // history.push('/vendorMaster')
-      console.log('no error')
     }
   }
 
@@ -129,7 +119,7 @@ const VendorCreateScreen = ({ history }) => {
           </Form.Text>
 
           {/* Company */}
-          <Form.Group className="mt-2 mb-3 " d-print-none>
+          <Form.Group className="mt-2 mb-3 ">
             <Form.Label>Company *</Form.Label>
             <Form.Control
               type="text"
@@ -180,7 +170,7 @@ const VendorCreateScreen = ({ history }) => {
 
           {/* disabled={category !== '-' ? true : null} */}
           {/* Material Text box */}
-          <Form.Group className="mb-3">
+          <Form.Group className="mb-1">
             <Form.Label>Material *</Form.Label>
             <Form.Control
               value={category}
@@ -191,17 +181,22 @@ const VendorCreateScreen = ({ history }) => {
             />
           </Form.Group>
 
-          <Form.Text className="text-muted mb-3">OR</Form.Text>
+          <Form.Text className="text-muted ">
+            &nbsp;&nbsp;&nbsp;OR Choose from Dropdown
+          </Form.Text>
 
           {/* Material Drop Down */}
-          <div className="mb-5 mt-3">
+          <div className="mb-4 mt-1">
             {!category_loading && (
               <select
                 value={categoryDD}
                 onChange={(e) => setCategoryDD(e.target.value)}
                 onClick={ddClickHandler}
+                className="width-100 custom-select"
               >
-                <option value="-">----</option>
+                <option value="" disabled>
+                  Material Category
+                </option>
                 {categories.map((category) => (
                   <option key={category._id} value={category.name}>
                     {category.name}
@@ -238,6 +233,16 @@ const VendorCreateScreen = ({ history }) => {
               type="text"
               placeholder="Enter Mail ID"
               onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+
+          {/* Remark */}
+          <Form.Group className="mb-3">
+            <Form.Label>Remarks</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Remarks"
+              onChange={(e) => setRemarks(e.target.value)}
             />
           </Form.Group>
 

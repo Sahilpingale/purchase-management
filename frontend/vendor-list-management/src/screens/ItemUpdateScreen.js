@@ -3,11 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Form, Button } from 'react-bootstrap'
 import FormContainer from '../components/FormContainer'
 import { listCategories, createCategories } from '../actions/categoryActions'
-import {
-  updateItem,
-  itemCreateReset,
-  getItemDetailsById,
-} from '../actions/itemActions'
+import { updateItem, getItemDetailsById } from '../actions/itemActions'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 
@@ -39,11 +35,7 @@ const ItemCreateScreen = ({ history, match }) => {
 
   // 5.Item Details
   const itemDetails = useSelector((state) => state.itemDetails)
-  const {
-    loading: itemDetailsLoading,
-    error: itemDetailsError,
-    item,
-  } = itemDetails
+  const { loading: itemDetailsLoading, item } = itemDetails
 
   //--- useState for form ---//
   const [name, setName] = useState('')
@@ -76,7 +68,7 @@ const ItemCreateScreen = ({ history, match }) => {
         }
       }
     }
-  }, [history, item, userInfo, itemUpdateSuccess])
+  }, [dispatch, userId, history, item, userInfo, itemUpdateSuccess])
 
   //--- Handlers ---//
   const submitHandler = (e) => {
@@ -85,7 +77,6 @@ const ItemCreateScreen = ({ history, match }) => {
       dispatch(
         updateItem(userId, {
           name,
-          unitOfMeasurement,
           vendorName,
           clientName,
           rate,
@@ -99,7 +90,6 @@ const ItemCreateScreen = ({ history, match }) => {
       dispatch(
         updateItem(userId, {
           name: nameDD,
-          unitOfMeasurement,
           vendorName,
           clientName,
           rate,
@@ -153,6 +143,7 @@ const ItemCreateScreen = ({ history, match }) => {
                     value={nameDD}
                     onChange={(e) => setNameDD(e.target.value)}
                     onClick={ddClickHandler}
+                    className="width-100"
                   >
                     <option value="-">----</option>
                     {categories.map((category) => (

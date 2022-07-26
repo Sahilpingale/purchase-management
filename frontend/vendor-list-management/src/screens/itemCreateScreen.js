@@ -115,7 +115,7 @@ const ItemCreateScreen = ({ history }) => {
 
             <div>
               <Form.Text className="text-muted mb-3">
-                Select from Category Dropdown
+                Select from Dropdown
               </Form.Text>
             </div>
             {/* Purchase Item Drop Down */}
@@ -125,8 +125,9 @@ const ItemCreateScreen = ({ history }) => {
                   value={nameDD}
                   onChange={(e) => setNameDD(e.target.value)}
                   onClick={ddClickHandler}
+                  className="width-100"
                 >
-                  <option value="-">----</option>
+                  <option value="">Item Category</option>
                   {categories.map((category) => (
                     <option key={category._id} value={category.name}>
                       {category.name}
@@ -136,7 +137,9 @@ const ItemCreateScreen = ({ history }) => {
               )}
             </div>
 
-            <Form.Text className="text-muted mb-3">OR</Form.Text>
+            <Form.Text className="text-muted mb-3">
+              &nbsp;&nbsp;&nbsp;OR
+            </Form.Text>
 
             <Form.Control
               value={name}

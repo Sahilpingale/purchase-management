@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Container, Col, Row } from 'react-bootstrap'
+import { Col, Row } from 'react-bootstrap'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import FormContainer from '../components/FormContainer'
-import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { register } from '../actions/userActions'
 
@@ -18,7 +17,7 @@ const RegisterScreen = ({ history, location }) => {
   const dispatch = useDispatch()
 
   const userRegister = useSelector((state) => state.userRegister)
-  const { loading, error, userInfo } = userRegister
+  const { error, userInfo } = userRegister
 
   const redirect = location.search
     ? location.search.split('=')[1]
@@ -71,7 +70,7 @@ const RegisterScreen = ({ history, location }) => {
           />
         </Form.Group>
         <Button variant="primary" type="submit">
-          Submit
+          Register
         </Button>
       </Form>
       <Row className="py-4">

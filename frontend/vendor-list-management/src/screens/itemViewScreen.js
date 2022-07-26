@@ -61,11 +61,14 @@ const ItemViewScreen = ({ history, match }) => {
         dispatch(getItemByCategory({ category }))
       }
     }
-  }, [category, keyword, history, userInfo, itemDeleteSuccess])
+  }, [dispatch, category, keyword, history, userInfo, itemDeleteSuccess])
 
   // --- Handlers ---//
   const test = (e) => {
     setCategory(e.target.value)
+  }
+  const resetCategory = () => {
+    setCategory('All')
   }
 
   const deleteHandler = (id) => {
@@ -75,7 +78,7 @@ const ItemViewScreen = ({ history, match }) => {
   }
   return (
     <>
-      <h2>Item Master</h2>
+      <h2 className="mb-4">Item Master</h2>
       {/* If Errors */}
       {itemListError && <Message variant="danger">{itemListError}</Message>}
       {categoryError && <Message variant="danger">{categoryError}</Message>}
@@ -83,21 +86,32 @@ const ItemViewScreen = ({ history, match }) => {
       <div className="flex">
         {/* Category Dropdown */}
         {!categoryLoading && (
-          <select className="dropdown" value={category} onChange={test}>
-            <option value="All">All</option>
-            {categories.map((category) => (
-              <option key={category._id} value={category.name}>
-                {category.name}
-              </option>
-            ))}
-          </select>
+          <div>
+            <p className="category-tag">Category</p>
+            <select
+              className="dropdown custom-select"
+              value={category}
+              onChange={test}
+            >
+              <option value="All">All</option>
+              {categories.map((category) => (
+                <option key={category._id} value={category.name}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+          </div>
         )}
 
         {/* Search Box */}
         {!categoryLoading && (
           <Route
             render={({ history }) => (
-              <SearchBox history={history} search="itemMaster" />
+              <SearchBox
+                history={history}
+                search="itemMaster"
+                resetCategoryFunc={resetCategory}
+              />
             )}
           />
         )}
@@ -129,7 +143,9 @@ const ItemViewScreen = ({ history, match }) => {
                 <td>{item.unitOfMeasurement}</td>
                 <td>{item.rate}</td>
                 <td>{item.taxAmount}%</td>
-                <td>{(item.rate * item.taxAmount) / 100 + item.rate}</td>
+                <td>
+                  ₹{((item.rate * item.taxAmount) / 100 + item.rate).toFixed(2)}
+                </td>
                 <td>{item.dateOfPurchase}</td>
                 <td>
                   <LinkContainer to={`/items/${item._id}`}>

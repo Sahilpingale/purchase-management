@@ -38,7 +38,6 @@ export const listItems =
           Authorization: `Bearer ${userInfo.token}`,
         },
       }
-      console.log(keyword)
       const res = await axios.get(`/api/items?keyword=${keyword}`, config)
       // const res = await axios.get(`/api/items`, config)
 
