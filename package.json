@@ -13,6 +13,9 @@
     "data:destroy": "node backend/seeder -d",
     "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend/vendor-list-management && npm run build --prefix frontend/vendor-list-management"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "author": "Sahil Pingale",
   "license": "MIT",
   "dependencies": {
