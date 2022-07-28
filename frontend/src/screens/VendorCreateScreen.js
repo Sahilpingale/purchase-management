@@ -158,6 +158,26 @@ const VendorCreateScreen = ({ history }) => {
             />
           </Form.Group>
 
+          {/* Email */}
+          <Form.Group className="mb-3">
+            <Form.Label>Mail ID</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Mail ID"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
+
+          {/* Visit Date */}
+          <Form.Group className="mb-3">
+            <Form.Label>Visit Date</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Date"
+              onChange={(e) => setRemarks(e.target.value)}
+            />
+          </Form.Group>
+
           {/* Area */}
           <Form.Group className="mb-3">
             <Form.Label>Area</Form.Label>
@@ -223,26 +243,6 @@ const VendorCreateScreen = ({ history }) => {
               type="text"
               placeholder="Enter Vendor Classification"
               onChange={(e) => setVendor_classification(e.target.value)}
-            />
-          </Form.Group>
-
-          {/* Email */}
-          <Form.Group className="mb-3">
-            <Form.Label>Mail ID</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Mail ID"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Form.Group>
-
-          {/* Remark */}
-          <Form.Group className="mb-3">
-            <Form.Label>Remarks</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Enter Remarks"
-              onChange={(e) => setRemarks(e.target.value)}
             />
           </Form.Group>
 

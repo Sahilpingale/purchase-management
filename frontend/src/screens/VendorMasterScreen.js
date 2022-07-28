@@ -134,23 +134,12 @@ const VendorMasterScreen = ({ history, match }) => {
               <th>Name</th>
               <th>Contact </th>
               <th>Designation</th>
+              <th>Mail ID</th>
+              <th>Visit_Date</th>
               <th>Area</th>
               <th>Material</th>
-              <th>
-                {/* <p className="invisibl">................................</p> */}
-                Plant_Location
-              </th>
-              <th>
-                {/* <p className="invisible">...........................</p> */}
-                Vendor_Classification{' '}
-              </th>
-              <th>Mail ID</th>
-              <th>
-                <p className="invisible">
-                  .............................................................
-                </p>
-                Remarks
-              </th>
+              <th>Plant_Location</th>
+              <th>Vendor_Classification </th>
             </tr>
           </thead>
           <tbody>
@@ -169,16 +158,16 @@ const VendorMasterScreen = ({ history, match }) => {
                   ))}{' '}
                 </td>
                 <td>{vendor.designation}</td>
-                <td>{vendor.area}</td>
-                <td>{vendor.category}</td>
-                <td>{vendor.plant_location}</td>
-                <td>{vendor.vendor_classification}</td>
                 <td>
                   <a className="links" href={`mailto:${vendor.email}`}>
                     {vendor.email}
                   </a>
                 </td>
                 <td>{vendor.remarks}</td>
+                <td>{vendor.area}</td>
+                <td>{vendor.category}</td>
+                <td>{vendor.plant_location}</td>
+                <td>{vendor.vendor_classification}</td>
                 <td>
                   <LinkContainer to={`/vendors/${vendor._id}`}>
                     <Button variant="light" className="btn-sm">
