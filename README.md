@@ -7,7 +7,6 @@
 - Filter by material category using dropdown
 - Create, read, update, delete vendor details
 
-```
 
 ### Seed Database
 
@@ -15,14 +14,14 @@ You can use the following commands to seed the database with some sample users a
 
 ```
 # Import vendors
-node 
+node vendorSeeder
 
-# Destroy data
-npm run data:destroy
+# Import Purchase Items
+node itemDataSeeder
 ```
 
-Sample User Logins
-
+### Sample User Logins
+```
 sushil123 (Admin)
 123456
 ```
