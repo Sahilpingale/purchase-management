@@ -62,7 +62,7 @@ const LoginScreen = ({ history, location }) => {
       </Form>
       <Row className="py-4">
         <Col>
-          New User? <Link to="">Register</Link>
+          New User? <Link to="/register">Register</Link>
         </Col>
       </Row>
     </FormContainer>
